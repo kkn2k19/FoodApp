@@ -1,4 +1,4 @@
-package com.karan.foodapp_backend;
+package com.karan.foodappbackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
