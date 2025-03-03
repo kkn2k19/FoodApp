@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    background-color: black;
+    color: white;
+}
+
+.leftContainer {
+    width: 20%;
+}
+
+.rightContainer {
+    display: flex;
+    width: 80%;
+    a {
+        color: white;
+        text-decoration: none;
+        margin: 10px auto;
+    }
+}
