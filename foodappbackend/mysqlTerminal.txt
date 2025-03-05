@@ -1,0 +1,81 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 7331
+Server version: 8.0.40 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use demodb;
+Database changed
+mysql> show tables;
++------------------+
+| Tables_in_demodb |
++------------------+
+| account          |
+| customer         |
+| food             |
+| job              |
+| prd              |
+| product          |
+| purchase         |
+| register         |
++------------------+
+8 rows in set (0.02 sec)
+
+mysql> use aecdbst;
+Database changed
+mysql> show tables;
++-------------------+
+| Tables_in_aecdbst |
++-------------------+
+| food              |
+| order_dtls        |
+| prd               |
+| register          |
++-------------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from food;
++-----+---------------+--------+
+| fid | fname         | fprice |
++-----+---------------+--------+
+| F1  | AALOO GOBHI   |    100 |
+| F2  | CHICKEN TIKKA |    200 |
+| F3  | MATAR PANEER  |    150 |
++-----+---------------+--------+
+3 rows in set (0.01 sec)
+
+mysql> select * from order_dtls;
++-----+-----+------------+------+---------+
+| oid | fid | odt        | oqty | uname   |
++-----+-----+------------+------+---------+
+|   1 | F1  | 2025-03-05 |    2 | kkn2k19 |
++-----+-----+------------+------+---------+
+1 row in set (0.01 sec)
+
+mysql> select * from prd;
++-----+-----------------+------+-------+
+| pid | pname           | pqty | price |
++-----+-----------------+------+-------+
+| P1  | WASHING MACHINE |    2 | 25000 |
+| P2  | MOBILE          |    1 | 25000 |
+| P5  | WASHING MACHINE |    2 | 25000 |
++-----+-----------------+------+-------+
+3 rows in set (0.02 sec)
+
+mysql> select * from register;
++-----------+---------------+---------+-------+-------+
+| uname     | email         | nm      | pass  | phno  |
++-----------+---------------+---------+-------+-------+
+| chandanOP | ck@gmail.com  | Chandan | 54321 | 85285 |
+| kkn2k19   | kkn@gmail.com | Karan   | 12345 | 96396 |
++-----------+---------------+---------+-------+-------+
+2 rows in set (0.01 sec)
+
+mysql>
