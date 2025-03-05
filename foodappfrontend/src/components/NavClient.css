@@ -1,17 +1,16 @@
-.container {
+.container{
     display: flex;
+}
+.leftContainer{
+    width: 20%;
     background-color: black;
     color: white;
-    width: 100%;
 }
-
-.leftContainer {
-    width: 20%;
-}
-
-.rightContainer {
+.rightContainer{
     display: flex;
     width: 80%;
+    background-color: black;
+    color: white;
     a {
         color: white;
         text-decoration: none;

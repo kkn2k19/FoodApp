@@ -1,10 +1,13 @@
 import React from 'react'
 import "./Nav.css"
+// import { useNavigate } from 'react-router-dom'
 function Nav() {
+    // var navigate = useNavigate();
     return (
-        <div className='container'>
+        <div className='container' >
             <div className='leftContainer'>
-                <h2>Food App</h2>
+                <h2>FoodApp Admin</h2>
+                {/* <h2 style={{ cursor: "pointer", color: "yellow" }} onClick={() => navigate("/")}>FoodApp Admin</h2> */}
             </div>
             <div className='rightContainer'>
                 <a href="/food">FOOD</a>

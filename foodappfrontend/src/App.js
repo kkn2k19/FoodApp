@@ -9,12 +9,26 @@ import AddFood from './components/AddFood';
 import DeleteFood from './components/DeleteFood';
 import SearchFood from './components/SearchFood';
 import UpdateFood from './components/UpdateFood';
+import Home from './components/Home';
+import Register from './components/Register';
+import Login from './components/Login';
+import NavClient from './components/NavClient';
+import AddOrder from './components/AddOrder';
+import Billing from './components/Billing';
+import Contact from './components/Contact';
 function App() {
   return (
     <div className="App">
-      <h2>FOOD APP</h2>
-      <Nav />
+      {/* <h2>FOOD APP</h2> */}
       <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/nav' element={<Nav />} />
+        <Route path='/navclient' element={<NavClient />} />
+        <Route path='/order' element={<AddOrder />} />
+        <Route path='/billing' element={<Billing />} />
+        <Route path='/contact' element={<Contact />} />
 
         <Route path='/food' element={<Food />} >
           <Route path="add" element={<AddFood />} />
@@ -24,6 +38,7 @@ function App() {
 
         <Route path='/flist' element={<FoodList />} />
         <Route path='/sfood' element={<SearchFood />} />
+
       </Routes>
     </div>
   );
