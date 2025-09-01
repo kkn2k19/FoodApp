@@ -1,0 +1,337 @@
+#Admin Login 
+POST http://localhost:1111/api/auth/login
+Content-Type: application/json
+
+{
+    "email" : "kkn2k19@gmail.com",
+    "password" : "Karan@321"
+}
+
+# {
+#   "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc1MzEyOCwiZXhwIjoxNzU2ODM5NTI4fQ._-8XPq1X4gzcB5n-8oPUyXS0T3OH7wVIIhOYxRZGARU",
+#   "role": "ADMIN"
+# }
+
+### ADD Restaurant
+POST http://localhost:1111/api/restaurants
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc1MzEyOCwiZXhwIjoxNzU2ODM5NTI4fQ._-8XPq1X4gzcB5n-8oPUyXS0T3OH7wVIIhOYxRZGARU
+
+{
+  "name": "Karan's Special Dhaba",
+  "email": "contact@karansdhaba.com",
+  "phone": "9876543210",
+  "active": true,
+  "addressLine1": "123 MG Road",
+  "city": "Kolkata",
+  "state": "West Bengal",
+  "pincode": "700001"
+}
+
+# Restaurant added successfully
+
+
+### Add Restaurant
+POST http://localhost:1111/api/restaurants
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc1MzEyOCwiZXhwIjoxNzU2ODM5NTI4fQ._-8XPq1X4gzcB5n-8oPUyXS0T3OH7wVIIhOYxRZGARU
+
+{
+  "name": "Spice Junction",
+  "email": "hello@spicejunction.in",
+  "phone": "9123456780",
+  "active": true,
+  "addressLine1": "45 Park Street",
+  "city": "Kolkata",
+  "state": "West Bengal",
+  "pincode": "700016"
+}
+
+# Restaurant added successfully
+
+
+### Add Restaurant
+POST http://localhost:1111/api/restaurants
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc1MzEyOCwiZXhwIjoxNzU2ODM5NTI4fQ._-8XPq1X4gzcB5n-8oPUyXS0T3OH7wVIIhOYxRZGARU
+
+{
+  "name": "Annapurna Bhojanalaya",
+  "email": "contact@annapurnabhoj.in",
+  "phone": "9876543210",
+  "active": true,
+  "addressLine1": "12 MG Road",
+  "city": "Bangalore",
+  "state": "Karnataka",
+  "pincode": "560001"
+}
+
+# Restaurant added successfully
+
+
+#now we have added 3 
+# lets use get methods
+
+### Get All Restaurants
+GET http://localhost:1111/api/restaurants
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc1MzEyOCwiZXhwIjoxNzU2ODM5NTI4fQ._-8XPq1X4gzcB5n-8oPUyXS0T3OH7wVIIhOYxRZGARU
+
+# [
+#   {
+#     "id": 1,
+#     "name": "Karan's Special Dhaba",
+#     "email": "contact@karansdhaba.com",
+#     "phone": "9876543210",
+#     "active": true,
+#     "addressLine1": "123 MG Road",
+#     "city": "Kolkata",
+#     "state": "West Bengal",
+#     "pincode": "700001"
+#   },
+#   {
+#     "id": 2,
+#     "name": "Spice Junction",
+#     "email": "hello@spicejunction.in",
+#     "phone": "9123456780",
+#     "active": true,
+#     "addressLine1": "45 Park Street",
+#     "city": "Kolkata",
+#     "state": "West Bengal",
+#     "pincode": "700016"
+#   },
+#   {
+#     "id": 3,
+#     "name": "Annapurna Bhojanalaya",
+#     "email": "contact@annapurnabhoj.in",
+#     "phone": "9876543210",
+#     "active": true,
+#     "addressLine1": "12 MG Road",
+#     "city": "Bangalore",
+#     "state": "Karnataka",
+#     "pincode": "560001"
+#   }
+# ]
+
+
+### GET BY ID 
+GET http://localhost:1111/api/restaurants/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc1MzEyOCwiZXhwIjoxNzU2ODM5NTI4fQ._-8XPq1X4gzcB5n-8oPUyXS0T3OH7wVIIhOYxRZGARU
+
+# {
+#   "id": 3,
+#   "name": "Annapurna Bhojanalaya",
+#   "email": "contact@annapurnabhoj.in",
+#   "phone": "9876543210",
+#   "active": true,
+#   "addressLine1": "12 MG Road",
+#   "city": "Bangalore",
+#   "state": "Karnataka",
+#   "pincode": "560001"
+# }
+
+
+# lets try to update them 
+
+### Update Restaurant (ID = 1 → Dutta Sweets)
+PUT http://localhost:1111/api/restaurants/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc1MzEyOCwiZXhwIjoxNzU2ODM5NTI4fQ._-8XPq1X4gzcB5n-8oPUyXS0T3OH7wVIIhOYxRZGARU
+
+{
+  "name": "Dutta Sweets",
+  "email": "duttasweets@gmail.com",
+  "phone": "9876543210",
+  "active": true,
+  "addressLine1": "Barwadda",
+  "city": "Dhanbad",
+  "state": "Jharkhand",
+  "pincode": "826004"
+}
+
+# Restaurant details updated
+
+
+### GET BY ID - 1
+GET http://localhost:1111/api/restaurants/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc1MzEyOCwiZXhwIjoxNzU2ODM5NTI4fQ._-8XPq1X4gzcB5n-8oPUyXS0T3OH7wVIIhOYxRZGARU
+
+# {
+#   "id": 1,
+#   "name": "Dutta Sweets",
+#   "email": "duttasweets@gmail.com",
+#   "phone": "9876543210",
+#   "active": true,
+#   "addressLine1": "Barwadda",
+#   "city": "Dhanbad",
+#   "state": "Jharkhand",
+#   "pincode": "826004"
+# }
+
+
+# lets delete - id : 2
+
+### Delete Restaurant
+DELETE http://localhost:1111/api/restaurants/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc1MzEyOCwiZXhwIjoxNzU2ODM5NTI4fQ._-8XPq1X4gzcB5n-8oPUyXS0T3OH7wVIIhOYxRZGARU
+
+# Restaurant deleted successfully
+
+# lets fetch all and see this changes 
+
+### Get All Restaurants
+GET http://localhost:1111/api/restaurants
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc1MzEyOCwiZXhwIjoxNzU2ODM5NTI4fQ._-8XPq1X4gzcB5n-8oPUyXS0T3OH7wVIIhOYxRZGARU
+
+# [
+#   {
+#     "id": 1,
+#     "name": "Dutta Sweets",
+#     "email": "duttasweets@gmail.com",
+#     "phone": "9876543210",
+#     "active": true,
+#     "addressLine1": "Barwadda",
+#     "city": "Dhanbad",
+#     "state": "Jharkhand",
+#     "pincode": "826004"
+#   },
+#   {
+#     "id": 3,
+#     "name": "Annapurna Bhojanalaya",
+#     "email": "contact@annapurnabhoj.in",
+#     "phone": "9876543210",
+#     "active": true,
+#     "addressLine1": "12 MG Road",
+#     "city": "Bangalore",
+#     "state": "Karnataka",
+#     "pincode": "560001"
+#   }
+# ]
+
+
+# now admin parts tested lets go for user parts 
+###  login user
+
+POST http://localhost:1111/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "kkn.karan02@gmail.com",
+  "password": "Chandan@123"
+}
+
+# {
+#   "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1Njc1NDQ2NSwiZXhwIjoxNzU2ODQwODY1fQ.L_B5c4sTPeJog0K4Gto6fp71u7lb7qCZMtfoc3wjIOA",
+#   "role": "USER"
+# }
+
+# lets check restaurants list 
+### GET 
+GET http://localhost:1111/api/restaurants
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1Njc1NDQ2NSwiZXhwIjoxNzU2ODQwODY1fQ.L_B5c4sTPeJog0K4Gto6fp71u7lb7qCZMtfoc3wjIOA
+
+# [
+#   {
+#     "id": 1,
+#     "name": "Dutta Sweets",
+#     "email": "duttasweets@gmail.com",
+#     "phone": "9876543210",
+#     "active": true,
+#     "addressLine1": "Barwadda",
+#     "city": "Dhanbad",
+#     "state": "Jharkhand",
+#     "pincode": "826004"
+#   },
+#   {
+#     "id": 3,
+#     "name": "Annapurna Bhojanalaya",
+#     "email": "contact@annapurnabhoj.in",
+#     "phone": "9876543210",
+#     "active": true,
+#     "addressLine1": "12 MG Road",
+#     "city": "Bangalore",
+#     "state": "Karnataka",
+#     "pincode": "560001"
+#   }
+# ]
+
+### GET BY ID
+GET http://localhost:1111/api/restaurants/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1Njc1NDQ2NSwiZXhwIjoxNzU2ODQwODY1fQ.L_B5c4sTPeJog0K4Gto6fp71u7lb7qCZMtfoc3wjIOA
+
+# {
+#   "id": 1,
+#   "name": "Dutta Sweets",
+#   "email": "duttasweets@gmail.com",
+#   "phone": "9876543210",
+#   "active": true,
+#   "addressLine1": "Barwadda",
+#   "city": "Dhanbad",
+#   "state": "Jharkhand",
+#   "pincode": "826004"
+# }
+
+# Lets try POST PUT or DELETE which are blocked for USER Role
+
+###POST
+POST http://localhost:1111/api/restaurants
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1Njc1NDQ2NSwiZXhwIjoxNzU2ODQwODY1fQ.L_B5c4sTPeJog0K4Gto6fp71u7lb7qCZMtfoc3wjIOA
+
+{
+  "name": "Sandesa Foodies",
+  "email": "sandesa@yahoo.com",
+  "phone": "1112223333",
+  "active": true,
+  "addressLine1": "Somewhere",
+  "city": "Delhi",
+  "state": "Delhi",
+  "pincode": "110001"
+}
+
+# HTTP/1.1 403 
+# X-Content-Type-Options: nosniff
+# X-XSS-Protection: 0
+# Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+# Pragma: no-cache
+# Expires: 0
+# X-Frame-Options: DENY
+# Content-Length: 0
+# Date: Mon, 01 Sep 2025 19:25:20 GMT
+# Connection: close
+
+### PUT (blocked)
+PUT http://localhost:1111/api/restaurants/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1Njc1NDQ2NSwiZXhwIjoxNzU2ODQwODY1fQ.L_B5c4sTPeJog0K4Gto6fp71u7lb7qCZMtfoc3wjIOA
+
+{
+  "name": "Updated by User"
+}
+
+# HTTP/1.1 403 
+# X-Content-Type-Options: nosniff
+# X-XSS-Protection: 0
+# Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+# Pragma: no-cache
+# Expires: 0
+# X-Frame-Options: DENY
+# Content-Length: 0
+# Date: Mon, 01 Sep 2025 19:26:56 GMT
+# Connection: close
+
+### DELETE (blocked)
+DELETE http://localhost:1111/api/restaurants/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1Njc1NDQ2NSwiZXhwIjoxNzU2ODQwODY1fQ.L_B5c4sTPeJog0K4Gto6fp71u7lb7qCZMtfoc3wjIOA
+
+# HTTP/1.1 403 
+# X-Content-Type-Options: nosniff
+# X-XSS-Protection: 0
+# Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+# Pragma: no-cache
+# Expires: 0
+# X-Frame-Options: DENY
+# Content-Length: 0
+# Date: Mon, 01 Sep 2025 19:27:24 GMT
+# Connection: close
+
+# fully tested the restaurant parts
