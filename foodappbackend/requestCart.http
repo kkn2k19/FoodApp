@@ -1,0 +1,123 @@
+### login user
+POST http://localhost:1111/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "kkn.karan02@gmail.com",
+  "password": "Chandan@123"
+}
+
+# {
+#   "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgwNjQwMywiZXhwIjoxNzU2ODkyODAzfQ.M86Gav7G4GNtMToBOcCa-oq7d4B4Z1vCzqts5_SUi18",
+#   "role": "USER"
+# }
+
+#  lets check available foods
+
+### User - Get All Foods
+GET http://localhost:1111/api/foods
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgwNjQwMywiZXhwIjoxNzU2ODkyODAzfQ.M86Gav7G4GNtMToBOcCa-oq7d4B4Z1vCzqts5_SUi18
+
+# [
+#   {
+#     "id": 1,
+#     "name": "Paneer Butter Masala",
+#     "price": 250.0,
+#     "description": "Creamy paneer curry with rich tomato gravy",
+#     "category": "North Indian",
+#     "restaurantName": "Dutta Sweets"
+#   },
+#   {
+#     "id": 2,
+#     "name": "Masala Dosa",
+#     "price": 120.0,
+#     "description": "Crispy dosa stuffed with spiced potato masala",
+#     "category": "South Indian",
+#     "restaurantName": "Dutta Sweets"
+#   },
+#   {
+#     "id": 4,
+#     "name": "Thali Special",
+#     "price": 200.0,
+#     "description": "Full Bhojanalaya veg thali",
+#     "category": "North Indian",
+#     "restaurantName": "Annapurna Bhojanalaya"
+#   },
+#   {
+#     "id": 5,
+#     "name": "Special Idli Sambar",
+#     "price": 100.0,
+#     "description": "Idlis with ghee sambar and coconut chutney",
+#     "category": "South Indian",
+#     "restaurantName": "Dutta Sweets"
+#   }
+# ]
+
+# lets add food item to cart
+### 1. Add Food Item to Cart (FoodId=1, Quantity=2)
+POST http://localhost:1111/api/cart/add/1?quantity=2
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgwNjQwMywiZXhwIjoxNzU2ODkyODAzfQ.M86Gav7G4GNtMToBOcCa-oq7d4B4Z1vCzqts5_SUi18
+
+# Item added to cart
+
+### 2. Add Another Food Item (FoodId=5, Quantity=1)
+POST http://localhost:1111/api/cart/add/5?quantity=1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgwNjQwMywiZXhwIjoxNzU2ODkyODAzfQ.M86Gav7G4GNtMToBOcCa-oq7d4B4Z1vCzqts5_SUi18
+
+# Item added to cart
+
+
+# lets view cart - can view only his cart
+### 3. View Logged-in Users Cart
+GET http://localhost:1111/api/cart
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgwNjQwMywiZXhwIjoxNzU2ODkyODAzfQ.M86Gav7G4GNtMToBOcCa-oq7d4B4Z1vCzqts5_SUi18
+
+# [
+#   {
+#     "id": 1,
+#     "foodName": "Paneer Butter Masala",
+#     "restaurantName": "Dutta Sweets",
+#     "quantity": 2
+#   },
+#   {
+#     "id": 2,
+#     "foodName": "Special Idli Sambar",
+#     "restaurantName": "Dutta Sweets",
+#     "quantity": 1
+#   }
+# ]
+
+# lets update 
+### 4. Update Cart Item Quantity (cartItemId=10 → quantity=5)
+PUT http://localhost:1111/api/cart/update/10?quantity=5
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgwNjQwMywiZXhwIjoxNzU2ODkyODAzfQ.M86Gav7G4GNtMToBOcCa-oq7d4B4Z1vCzqts5_SUi18
+
+# Cart item not found
+
+### 4. Update Cart Item Quantity (cartItemId=2 → quantity=5)
+PUT http://localhost:1111/api/cart/update/2?quantity=5
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgwNjQwMywiZXhwIjoxNzU2ODkyODAzfQ.M86Gav7G4GNtMToBOcCa-oq7d4B4Z1vCzqts5_SUi18
+
+# Cart item updated
+
+# lets remove 
+### 5. Remove Cart Item (cartItemId=1)
+DELETE http://localhost:1111/api/cart/remove/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgwNjQwMywiZXhwIjoxNzU2ODkyODAzfQ.M86Gav7G4GNtMToBOcCa-oq7d4B4Z1vCzqts5_SUi18
+
+# Item removed from cart
+
+
+# lets try to clear entire cart 
+### 6. Clear Entire Cart (logged-in user only)
+DELETE http://localhost:1111/api/cart/clear
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgwNjQwMywiZXhwIjoxNzU2ODkyODAzfQ.M86Gav7G4GNtMToBOcCa-oq7d4B4Z1vCzqts5_SUi18
+
+# Cart cleared
+
+#lets check cart
+### GET
+GET http://localhost:1111/api/cart
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgwNjQwMywiZXhwIjoxNzU2ODkyODAzfQ.M86Gav7G4GNtMToBOcCa-oq7d4B4Z1vCzqts5_SUi18
+
+# Your cart is empty.
