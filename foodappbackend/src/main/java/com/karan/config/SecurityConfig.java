@@ -29,12 +29,30 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        // User & Admin can fetch restaurants (GET)
+
+                        // Restaurants
                         .requestMatchers(HttpMethod.GET, "/api/restaurants/**").hasAnyRole("USER", "ADMIN")
-                        // Only Admin can create, update, delete restaurants
                         .requestMatchers(HttpMethod.POST, "/api/restaurants/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/restaurants/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/restaurants/**").hasRole("ADMIN")
+
+                        // Foods
+                        .requestMatchers(HttpMethod.GET, "/api/foods/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/foods/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/foods/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/foods/**").hasRole("ADMIN")
+
+                        // Cart (User only)
+                        .requestMatchers("/api/cart/**").hasRole("USER")
+
+                        // Orders
+                        .requestMatchers(HttpMethod.POST, "/api/orders/place").hasRole("USER") // place order
+                        .requestMatchers(HttpMethod.GET, "/api/orders").hasAnyRole("USER", "ADMIN") // list orders
+                        .requestMatchers(HttpMethod.GET, "/api/orders/*").hasAnyRole("USER", "ADMIN") // single order
+                        .requestMatchers(HttpMethod.DELETE, "/api/orders/*").hasRole("USER") // cancel order
+                        .requestMatchers(HttpMethod.PATCH, "/api/orders/*/status").hasRole("ADMIN") // update status
+
+                        // others
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

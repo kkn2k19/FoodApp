@@ -52,6 +52,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                                                               // ROLE_ADMIN
             var auth = new UsernamePasswordAuthenticationToken(email, null, List.of(authority));
             SecurityContextHolder.getContext().setAuthentication(auth);
+
+            System.out.println("Email: " + email + ", Role: " + roleString);
+            System.out.println("Authorities set: " + auth.getAuthorities());
         }
 
         filterChain.doFilter(request, response);
