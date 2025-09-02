@@ -1,0 +1,348 @@
+### 1. User Login
+POST http://localhost:1111/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "kkn.karan02@gmail.com",
+  "password": "Chandan@123"
+}
+
+# {
+#   "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgyNjI2NiwiZXhwIjoxNzU2OTEyNjY2fQ.OAbxkkxMwfv-AhxeISfI3QhYVCFos4FfaiMEkte7CiU",
+#   "role": "USER"
+# }
+
+### 2. View Available Foods
+GET http://localhost:1111/api/foods
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgyNjI2NiwiZXhwIjoxNzU2OTEyNjY2fQ.OAbxkkxMwfv-AhxeISfI3QhYVCFos4FfaiMEkte7CiU
+
+# [
+#   {
+#     "id": 1,
+#     "name": "Paneer Butter Masala",
+#     "price": 250.0,
+#     "description": "Creamy paneer curry with rich tomato gravy",
+#     "category": "North Indian",
+#     "restaurantName": "Dutta Sweets"
+#   },
+#   {
+#     "id": 2,
+#     "name": "Masala Dosa",
+#     "price": 120.0,
+#     "description": "Crispy dosa stuffed with spiced potato masala",
+#     "category": "South Indian",
+#     "restaurantName": "Dutta Sweets"
+#   },
+#   {
+#     "id": 4,
+#     "name": "Thali Special",
+#     "price": 200.0,
+#     "description": "Full Bhojanalaya veg thali",
+#     "category": "North Indian",
+#     "restaurantName": "Annapurna Bhojanalaya"
+#   },
+#   {
+#     "id": 5,
+#     "name": "Special Idli Sambar",
+#     "price": 100.0,
+#     "description": "Idlis with ghee sambar and coconut chutney",
+#     "category": "South Indian",
+#     "restaurantName": "Dutta Sweets"
+#   }
+# ]
+
+
+### 3. Add Food Item to Cart (FoodId=1, Quantity=2)
+POST http://localhost:1111/api/cart/add/1?quantity=2
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgyNjI2NiwiZXhwIjoxNzU2OTEyNjY2fQ.OAbxkkxMwfv-AhxeISfI3QhYVCFos4FfaiMEkte7CiU
+
+# Item added to cart
+
+
+### 4. Add Another Food Item (FoodId=5, Quantity=1)
+POST http://localhost:1111/api/cart/add/5?quantity=1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgyNjI2NiwiZXhwIjoxNzU2OTEyNjY2fQ.OAbxkkxMwfv-AhxeISfI3QhYVCFos4FfaiMEkte7CiU
+
+# Item added to cart
+
+
+### 5. View Logged-in User's Cart
+GET http://localhost:1111/api/cart
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgyNjI2NiwiZXhwIjoxNzU2OTEyNjY2fQ.OAbxkkxMwfv-AhxeISfI3QhYVCFos4FfaiMEkte7CiU
+
+# [
+#   {
+#     "id": 3,
+#     "foodName": "Paneer Butter Masala",
+#     "restaurantName": "Dutta Sweets",
+#     "quantity": 2
+#   },
+#   {
+#     "id": 4,
+#     "foodName": "Special Idli Sambar",
+#     "restaurantName": "Dutta Sweets",
+#     "quantity": 1
+#   }
+# ]
+
+
+### 6. Update Cart Item Quantity (cartItemId=3 → quantity=5)
+PUT http://localhost:1111/api/cart/update/3?quantity=5
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgyNjI2NiwiZXhwIjoxNzU2OTEyNjY2fQ.OAbxkkxMwfv-AhxeISfI3QhYVCFos4FfaiMEkte7CiU
+
+# Cart item updated
+
+
+### 7. Remove Cart Item (cartItemId=4)
+DELETE http://localhost:1111/api/cart/remove/4
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgyNjI2NiwiZXhwIjoxNzU2OTEyNjY2fQ.OAbxkkxMwfv-AhxeISfI3QhYVCFos4FfaiMEkte7CiU
+
+# Item removed from cart
+
+
+### 8. Place Order (from current cart)
+POST http://localhost:1111/api/orders/place
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgyNjI2NiwiZXhwIjoxNzU2OTEyNjY2fQ.OAbxkkxMwfv-AhxeISfI3QhYVCFos4FfaiMEkte7CiU
+
+# Order placed successfully with ID: 1
+
+
+### 9. Get All Orders of Logged-in User
+GET http://localhost:1111/api/orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgyNjI2NiwiZXhwIjoxNzU2OTEyNjY2fQ.OAbxkkxMwfv-AhxeISfI3QhYVCFos4FfaiMEkte7CiU
+
+# [
+#   {
+#     "orderId": 1,
+#     "orderDate": "2025-09-02T20:52:35.530694",
+#     "status": "PENDING",
+#     "totalAmount": 1250.0,
+#     "items": [
+#       {
+#         "foodName": "Paneer Butter Masala",
+#         "quantity": 5,
+#         "price": 1250.0
+#       }
+#     ]
+#   }
+# ]
+
+
+### 10. Get Single Order by ID (replace {id} with real orderId)
+GET http://localhost:1111/api/orders/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgyNjI2NiwiZXhwIjoxNzU2OTEyNjY2fQ.OAbxkkxMwfv-AhxeISfI3QhYVCFos4FfaiMEkte7CiU
+
+# {
+#   "orderId": 1,
+#   "orderDate": "2025-09-02T20:52:35.530694",
+#   "status": "PENDING",
+#   "totalAmount": 1250.0,
+#   "items": [
+#     {
+#       "foodName": "Paneer Butter Masala",
+#       "quantity": 5,
+#       "price": 1250.0
+#     }
+#   ]
+# }
+
+
+### 11. Cancel Order (if still not delivered)
+DELETE http://localhost:1111/api/orders/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgyNjI2NiwiZXhwIjoxNzU2OTEyNjY2fQ.OAbxkkxMwfv-AhxeISfI3QhYVCFos4FfaiMEkte7CiU
+
+# Order with ID 1 has been cancelled
+
+# now all checked for users lets go for admin parts
+# we had one order and we deleted so lets add some from user and then go for admin
+
+### ADD -- FoodId - 1, quantity - 2
+POST http://localhost:1111/api/cart/add/1?quantity=2
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgyNjI2NiwiZXhwIjoxNzU2OTEyNjY2fQ.OAbxkkxMwfv-AhxeISfI3QhYVCFos4FfaiMEkte7CiU
+
+# Item added to cart
+
+
+###  Add Another Food Item (FoodId=5, Quantity=1)
+POST http://localhost:1111/api/cart/add/5?quantity=1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgyNjI2NiwiZXhwIjoxNzU2OTEyNjY2fQ.OAbxkkxMwfv-AhxeISfI3QhYVCFos4FfaiMEkte7CiU
+
+# Item added to cart
+
+#place order 
+### Place Order (from current cart)
+POST http://localhost:1111/api/orders/place
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgyNjI2NiwiZXhwIjoxNzU2OTEyNjY2fQ.OAbxkkxMwfv-AhxeISfI3QhYVCFos4FfaiMEkte7CiU
+
+# Order placed successfully with ID: 3
+
+
+### Get All Orders of Logged-in User
+GET http://localhost:1111/api/orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1NjgyNjI2NiwiZXhwIjoxNzU2OTEyNjY2fQ.OAbxkkxMwfv-AhxeISfI3QhYVCFos4FfaiMEkte7CiU
+
+# [
+#   {
+#     "orderId": 1,
+#     "orderDate": "2025-09-02T20:52:35.530694",
+#     "status": "CANCELLED",
+#     "totalAmount": 1250.0,
+#     "items": [
+#       {
+#         "foodName": "Paneer Butter Masala",
+#         "quantity": 5,
+#         "price": 1250.0
+#       }
+#     ]
+#   },
+#   {
+#     "orderId": 2,
+#     "orderDate": "2025-09-02T21:01:14.26164",
+#     "status": "DELIVERED",
+#     "totalAmount": 600.0,
+#     "items": [
+#       {
+#         "foodName": "Paneer Butter Masala",
+#         "quantity": 2,
+#         "price": 500.0
+#       },
+#       {
+#         "foodName": "Special Idli Sambar",
+#         "quantity": 1,
+#         "price": 100.0
+#       }
+#     ]
+#   },
+#   {
+#     "orderId": 3,
+#     "orderDate": "2025-09-02T22:04:58.783983",
+#     "status": "PENDING",
+#     "totalAmount": 600.0,
+#     "items": [
+#       {
+#         "foodName": "Paneer Butter Masala",
+#         "quantity": 2,
+#         "price": 500.0
+#       },
+#       {
+#         "foodName": "Special Idli Sambar",
+#         "quantity": 1,
+#         "price": 100.0
+#       }
+#     ]
+#   }
+# ]
+
+# admin login
+### 12. Admin Login
+POST http://localhost:1111/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "kkn2k19@gmail.com",
+  "password": "Karan@321"
+}
+
+# {
+#   "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1NjgyNjg2MywiZXhwIjoxNzU2OTEzMjYzfQ.umidpQfoszCePvtVo_ZqIwiB_loNeQ5FEVzoP89UIO8",
+#   "role": "ADMIN"
+# }
+
+
+### 13. Get Single Order by ID (Admin can view any order)
+GET http://localhost:1111/api/orders/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1NjgyNjg2MywiZXhwIjoxNzU2OTEzMjYzfQ.umidpQfoszCePvtVo_ZqIwiB_loNeQ5FEVzoP89UIO8
+
+# {
+#   "orderId": 2,
+#   "orderDate": "2025-09-02T21:01:14.26164",
+#   "status": "DELIVERED",
+#   "totalAmount": 600.0,
+#   "items": [
+#     {
+#       "foodName": "Paneer Butter Masala",
+#       "quantity": 2,
+#       "price": 500.0
+#     },
+#     {
+#       "foodName": "Special Idli Sambar",
+#       "quantity": 1,
+#       "price": 100.0
+#     }
+#   ]
+# }
+
+
+### 14. Update Order Status (Admin only → CONFIRMED)
+PATCH http://localhost:1111/api/orders/2/status?status=CONFIRMED
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1NjgyNjg2MywiZXhwIjoxNzU2OTEzMjYzfQ.umidpQfoszCePvtVo_ZqIwiB_loNeQ5FEVzoP89UIO8
+
+# Order status updated to: CONFIRMED
+
+### 15. Update Order Status (Admin → OUT_FOR_DELIVERY)
+PATCH http://localhost:1111/api/orders/2/status?status=OUT_FOR_DELIVERY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1NjgyNjg2MywiZXhwIjoxNzU2OTEzMjYzfQ.umidpQfoszCePvtVo_ZqIwiB_loNeQ5FEVzoP89UIO8
+
+# Order status updated to: OUT_FOR_DELIVERY
+
+### 16. Update Order Status (Admin → DELIVERED)
+PATCH http://localhost:1111/api/orders/2/status?status=DELIVERED
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1NjgyNjg2MywiZXhwIjoxNzU2OTEzMjYzfQ.umidpQfoszCePvtVo_ZqIwiB_loNeQ5FEVzoP89UIO8
+
+# Order status updated to: DELIVERED
+
+### Get All Orders
+GET http://localhost:1111/api/orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1NjgyNjg2MywiZXhwIjoxNzU2OTEzMjYzfQ.umidpQfoszCePvtVo_ZqIwiB_loNeQ5FEVzoP89UIO8
+
+# [
+#   {
+#     "orderId": 1,
+#     "orderDate": "2025-09-02T20:52:35.530694",
+#     "status": "CANCELLED",
+#     "totalAmount": 1250.0,
+#     "items": [
+#       {
+#         "foodName": "Paneer Butter Masala",
+#         "quantity": 5,
+#         "price": 1250.0
+#       }
+#     ]
+#   },
+#   {
+#     "orderId": 2,
+#     "orderDate": "2025-09-02T21:01:14.26164",
+#     "status": "DELIVERED",
+#     "totalAmount": 600.0,
+#     "items": [
+#       {
+#         "foodName": "Paneer Butter Masala",
+#         "quantity": 2,
+#         "price": 500.0
+#       },
+#       {
+#         "foodName": "Special Idli Sambar",
+#         "quantity": 1,
+#         "price": 100.0
+#       }
+#     ]
+#   },
+#   {
+#     "orderId": 3,
+#     "orderDate": "2025-09-02T22:04:58.783983",
+#     "status": "PENDING",
+#     "totalAmount": 600.0,
+#     "items": [
+#       {
+#         "foodName": "Paneer Butter Masala",
+#         "quantity": 2,
+#         "price": 500.0
+#       },
+#       {
+#         "foodName": "Special Idli Sambar",
+#         "quantity": 1,
+#         "price": 100.0
+#       }
+#     ]
+#   }
+# ]
