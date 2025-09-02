@@ -1,0 +1,445 @@
+#admin login
+POST http://localhost:1111/api/auth/login
+Content-Type: application/json
+
+{
+    "email" : "kkn2k19@gmail.com",
+    "password" : "Karan@321"
+}
+
+# {
+#   "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc1OTgxOCwiZXhwIjoxNzU2ODQ2MjE4fQ.oKdKkNm8hllSMk9mWnNyOp7Q4QUwXnpG_2O0vdMEItk",
+#   "role": "ADMIN"
+# }
+
+# first check restaurants details
+
+
+### Get All Restaurants
+GET http://localhost:1111/api/restaurants
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc1OTgxOCwiZXhwIjoxNzU2ODQ2MjE4fQ.oKdKkNm8hllSMk9mWnNyOp7Q4QUwXnpG_2O0vdMEItk
+
+# [
+#   {
+#     "id": 1,
+#     "name": "Dutta Sweets",
+#     "email": "duttasweets@gmail.com",
+#     "phone": "9876543210",
+#     "active": true,
+#     "addressLine1": "Barwadda",
+#     "city": "Dhanbad",
+#     "state": "Jharkhand",
+#     "pincode": "826004",
+#     "foodItems": []
+#   },
+#   {
+#     "id": 3,
+#     "name": "Annapurna Bhojanalaya",
+#     "email": "contact@annapurnabhoj.in",
+#     "phone": "9876543210",
+#     "active": true,
+#     "addressLine1": "12 MG Road",
+#     "city": "Bangalore",
+#     "state": "Karnataka",
+#     "pincode": "560001",
+#     "foodItems": []
+#   }
+# ]
+
+# Add Food 1 to Restaurant 1 -- admin
+
+
+###
+POST http://localhost:1111/api/foods/restaurant/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc1OTgxOCwiZXhwIjoxNzU2ODQ2MjE4fQ.oKdKkNm8hllSMk9mWnNyOp7Q4QUwXnpG_2O0vdMEItk
+
+{
+    "name": "Paneer Butter Masala",
+    "price": 250.0,
+    "description": "Creamy paneer curry with rich tomato gravy",
+    "category": "North Indian"
+}
+
+# Food Added to Restaurant successfully
+
+# Add Food 2 to Restaurant 1 -- admin
+
+
+###
+POST http://localhost:1111/api/foods/restaurant/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc1OTgxOCwiZXhwIjoxNzU2ODQ2MjE4fQ.oKdKkNm8hllSMk9mWnNyOp7Q4QUwXnpG_2O0vdMEItk
+
+{
+  "name": "Masala Dosa",
+  "price": 120.0,
+  "description": "Crispy dosa stuffed with spiced potato masala",
+  "category": "South Indian"
+}
+
+# Food Added to Restaurant successfully
+
+# Add Food 3 to Restaurant 1 -- admin
+
+
+###
+POST http://localhost:1111/api/foods/restaurant/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc1OTgxOCwiZXhwIjoxNzU2ODQ2MjE4fQ.oKdKkNm8hllSMk9mWnNyOp7Q4QUwXnpG_2O0vdMEItk
+
+{
+  "name": "Veg Hakka Noodles",
+  "price": 180.0,
+  "description": "Stir-fried noodles with vegetables",
+  "category": "Chinese"
+}
+
+# Food Added to Restaurant successfully
+
+
+# Add Food 1 to Restaurant 3 -- admin
+
+
+###
+POST http://localhost:1111/api/foods/restaurant/3
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc1OTgxOCwiZXhwIjoxNzU2ODQ2MjE4fQ.oKdKkNm8hllSMk9mWnNyOp7Q4QUwXnpG_2O0vdMEItk
+
+{
+  "name": "Thali Special",
+  "price": 200.0,
+  "description": "Full Bhojanalaya veg thali",
+  "category": "North Indian"
+}
+
+# Food Added to Restaurant successfully
+
+# Add Food 2 to Restaurant 1 -- admin
+
+
+###
+POST http://localhost:1111/api/foods/restaurant/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc1OTgxOCwiZXhwIjoxNzU2ODQ2MjE4fQ.oKdKkNm8hllSMk9mWnNyOp7Q4QUwXnpG_2O0vdMEItk
+
+{
+  "name": "Idli Sambar",
+  "price": 80.0,
+  "description": "Soft idlis with traditional sambar",
+  "category": "South Indian"
+}
+
+# Food Added to Restaurant successfully
+
+
+### GET Foods ADMIN 
+
+
+### Admin - Get All Foods
+GET http://localhost:1111/api/foods
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc2MDk1MSwiZXhwIjoxNzU2ODQ3MzUxfQ.FgQVKHOxaDQOio50izUwjvPOoTghS8JrxE7jst6v5ys
+
+# [
+#   {
+#     "id": 1,
+#     "name": "Paneer Butter Masala",
+#     "price": 250.0,
+#     "description": "Creamy paneer curry with rich tomato gravy",
+#     "category": "North Indian",
+#     "restaurantName": "Dutta Sweets"
+#   },
+#   {
+#     "id": 2,
+#     "name": "Masala Dosa",
+#     "price": 120.0,
+#     "description": "Crispy dosa stuffed with spiced potato masala",
+#     "category": "South Indian",
+#     "restaurantName": "Dutta Sweets"
+#   },
+#   {
+#     "id": 3,
+#     "name": "Veg Hakka Noodles",
+#     "price": 180.0,
+#     "description": "Stir-fried noodles with vegetables",
+#     "category": "Chinese",
+#     "restaurantName": "Dutta Sweets"
+#   },
+#   {
+#     "id": 4,
+#     "name": "Thali Special",
+#     "price": 200.0,
+#     "description": "Full Bhojanalaya veg thali",
+#     "category": "North Indian",
+#     "restaurantName": "Annapurna Bhojanalaya"
+#   },
+#   {
+#     "id": 5,
+#     "name": "Idli Sambar",
+#     "price": 80.0,
+#     "description": "Soft idlis with traditional sambar",
+#     "category": "South Indian",
+#     "restaurantName": "Dutta Sweets"
+#   }
+# ]
+
+
+### Admin - Get Foods by Restaurant 3
+GET http://localhost:1111/api/foods/restaurant/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc2MDk1MSwiZXhwIjoxNzU2ODQ3MzUxfQ.FgQVKHOxaDQOio50izUwjvPOoTghS8JrxE7jst6v5ys
+
+# [
+#   {
+#     "id": 4,
+#     "name": "Thali Special",
+#     "price": 200.0,
+#     "description": "Full Bhojanalaya veg thali",
+#     "category": "North Indian",
+#     "restaurantName": "Annapurna Bhojanalaya"
+#   }
+# ]
+
+
+### Admin - Get Foods by Restaurant 3
+GET http://localhost:1111/api/foods/restaurant/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc2MDk1MSwiZXhwIjoxNzU2ODQ3MzUxfQ.FgQVKHOxaDQOio50izUwjvPOoTghS8JrxE7jst6v5ys
+
+# [
+#   {
+#     "id": 1,
+#     "name": "Paneer Butter Masala",
+#     "price": 250.0,
+#     "description": "Creamy paneer curry with rich tomato gravy",
+#     "category": "North Indian",
+#     "restaurantName": "Dutta Sweets"
+#   },
+#   {
+#     "id": 2,
+#     "name": "Masala Dosa",
+#     "price": 120.0,
+#     "description": "Crispy dosa stuffed with spiced potato masala",
+#     "category": "South Indian",
+#     "restaurantName": "Dutta Sweets"
+#   },
+#   {
+#     "id": 3,
+#     "name": "Veg Hakka Noodles",
+#     "price": 180.0,
+#     "description": "Stir-fried noodles with vegetables",
+#     "category": "Chinese",
+#     "restaurantName": "Dutta Sweets"
+#   },
+#   {
+#     "id": 5,
+#     "name": "Idli Sambar",
+#     "price": 80.0,
+#     "description": "Soft idlis with traditional sambar",
+#     "category": "South Indian",
+#     "restaurantName": "Dutta Sweets"
+#   }
+# ]
+
+
+
+# update foods -- admins
+
+
+### Admin updates food (e.g. ID = 5)
+PUT http://localhost:1111/api/foods/5
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc2MDk1MSwiZXhwIjoxNzU2ODQ3MzUxfQ.FgQVKHOxaDQOio50izUwjvPOoTghS8JrxE7jst6v5ys
+
+{
+  "name": "Special Idli Sambar",
+  "price": 100.0,
+  "description": "Idlis with ghee sambar and coconut chutney",
+  "category": "South Indian"
+}
+
+# Food updated
+
+
+#delete foods - admins
+
+
+### Admin deletes food (e.g. ID = 3)
+DELETE http://localhost:1111/api/foods/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24yazE5QGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1Njc2MDk1MSwiZXhwIjoxNzU2ODQ3MzUxfQ.FgQVKHOxaDQOio50izUwjvPOoTghS8JrxE7jst6v5ys
+
+# Food deleted successfully
+
+
+# Now lets test with user
+
+
+### login user
+POST http://localhost:1111/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "kkn.karan02@gmail.com",
+  "password": "Chandan@123"
+}
+
+# {
+#   "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1Njc2MjgzOSwiZXhwIjoxNzU2ODQ5MjM5fQ.GdAHF1kFZ6ZY9uGP6nDDrmx-vlbrmtJEjSDSyinPcBE",
+#   "role": "USER"
+# }
+
+
+###GET with user
+
+
+### User - Get All Foods
+GET http://localhost:1111/api/foods
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1Njc2MjgzOSwiZXhwIjoxNzU2ODQ5MjM5fQ.GdAHF1kFZ6ZY9uGP6nDDrmx-vlbrmtJEjSDSyinPcBE
+
+# [
+#   {
+#     "id": 1,
+#     "name": "Paneer Butter Masala",
+#     "price": 250.0,
+#     "description": "Creamy paneer curry with rich tomato gravy",
+#     "category": "North Indian",
+#     "restaurantName": "Dutta Sweets"
+#   },
+#   {
+#     "id": 2,
+#     "name": "Masala Dosa",
+#     "price": 120.0,
+#     "description": "Crispy dosa stuffed with spiced potato masala",
+#     "category": "South Indian",
+#     "restaurantName": "Dutta Sweets"
+#   },
+#   {
+#     "id": 4,
+#     "name": "Thali Special",
+#     "price": 200.0,
+#     "description": "Full Bhojanalaya veg thali",
+#     "category": "North Indian",
+#     "restaurantName": "Annapurna Bhojanalaya"
+#   },
+#   {
+#     "id": 5,
+#     "name": "Special Idli Sambar",
+#     "price": 100.0,
+#     "description": "Idlis with ghee sambar and coconut chutney",
+#     "category": "South Indian",
+#     "restaurantName": "Dutta Sweets"
+#   }
+# ]
+
+
+### User - Get Foods by Restaurant 1
+GET http://localhost:1111/api/foods/restaurant/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1Njc2MjgzOSwiZXhwIjoxNzU2ODQ5MjM5fQ.GdAHF1kFZ6ZY9uGP6nDDrmx-vlbrmtJEjSDSyinPcBE
+
+# [
+#   {
+#     "id": 1,
+#     "name": "Paneer Butter Masala",
+#     "price": 250.0,
+#     "description": "Creamy paneer curry with rich tomato gravy",
+#     "category": "North Indian",
+#     "restaurantName": "Dutta Sweets"
+#   },
+#   {
+#     "id": 2,
+#     "name": "Masala Dosa",
+#     "price": 120.0,
+#     "description": "Crispy dosa stuffed with spiced potato masala",
+#     "category": "South Indian",
+#     "restaurantName": "Dutta Sweets"
+#   },
+#   {
+#     "id": 5,
+#     "name": "Special Idli Sambar",
+#     "price": 100.0,
+#     "description": "Idlis with ghee sambar and coconut chutney",
+#     "category": "South Indian",
+#     "restaurantName": "Dutta Sweets"
+#   }
+# ]
+
+
+### User - Get Foods by Restaurant 3
+GET http://localhost:1111/api/foods/restaurant/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1Njc2MjgzOSwiZXhwIjoxNzU2ODQ5MjM5fQ.GdAHF1kFZ6ZY9uGP6nDDrmx-vlbrmtJEjSDSyinPcBE
+
+# [
+#   {
+#     "id": 4,
+#     "name": "Thali Special",
+#     "price": 200.0,
+#     "description": "Full Bhojanalaya veg thali",
+#     "category": "North Indian",
+#     "restaurantName": "Annapurna Bhojanalaya"
+#   }
+# ]
+
+
+# lets try with PUT POST DELETE that are restricted for users
+
+
+### add food  -- POST
+POST http://localhost:1111/api/foods/restaurant/3
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1Njc2MjgzOSwiZXhwIjoxNzU2ODQ5MjM5fQ.GdAHF1kFZ6ZY9uGP6nDDrmx-vlbrmtJEjSDSyinPcBE
+
+{
+  "name": "Thali Special",
+  "price": 200.0,
+  "description": "Full Bhojanalaya veg thali",
+  "category": "North Indian"
+}
+
+# HTTP/1.1 403 
+# X-Content-Type-Options: nosniff
+# X-XSS-Protection: 0
+# Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+# Pragma: no-cache
+# Expires: 0
+# X-Frame-Options: DENY
+# Content-Length: 0
+# Date: Mon, 01 Sep 2025 21:46:48 GMT
+# Connection: close
+
+
+### update Food -- PUT
+PUT http://localhost:1111/api/foods/5
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1Njc2MjgzOSwiZXhwIjoxNzU2ODQ5MjM5fQ.GdAHF1kFZ6ZY9uGP6nDDrmx-vlbrmtJEjSDSyinPcBE
+
+{
+  "name": "Veg Hakka Noodles",
+  "price": 180.0,
+  "description": "Stir-fried noodles with vegetables",
+  "category": "Chinese"
+}
+
+# HTTP/1.1 403 
+# X-Content-Type-Options: nosniff
+# X-XSS-Protection: 0
+# Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+# Pragma: no-cache
+# Expires: 0
+# X-Frame-Options: DENY
+# Content-Length: 0
+# Date: Mon, 01 Sep 2025 21:48:43 GMT
+# Connection: close
+
+
+###delete Food
+DELETE http://localhost:1111/api/foods/4
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJra24ua2FyYW4wMkBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc1Njc2MjgzOSwiZXhwIjoxNzU2ODQ5MjM5fQ.GdAHF1kFZ6ZY9uGP6nDDrmx-vlbrmtJEjSDSyinPcBE
+
+# HTTP/1.1 403 
+# X-Content-Type-Options: nosniff
+# X-XSS-Protection: 0
+# Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+# Pragma: no-cache
+# Expires: 0
+# X-Frame-Options: DENY
+# Content-Length: 0
+# Date: Mon, 01 Sep 2025 21:49:43 GMT
+# Connection: close
