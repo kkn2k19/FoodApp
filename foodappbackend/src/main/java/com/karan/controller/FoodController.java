@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,56 +16,68 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.karan.model.Food;
+import com.karan.model.FoodItem;
+import com.karan.model.Restaurant;
 import com.karan.service.FoodService;
 
 @RestController
-@RequestMapping("/food")
-@CrossOrigin(origins = "http://localhost:3000/")
+@RequestMapping("/api/foods")
 public class FoodController {
     @Autowired
     private FoodService fService;
 
-    // POST MAPPING
-    @PostMapping("/add")
-    public ResponseEntity<String> addFood(@RequestBody Food f) {
-        String msg = "Food added Successfully";
-        fService.addFood(f);
-        return new ResponseEntity<String>(msg, HttpStatus.CREATED);
-    }
-
-    // GET MAPPING (for all)
-    @GetMapping("/fetch")
-    public ResponseEntity<List<Food>> getFood() {
-        List<Food> flist = fService.getFood();
-        return new ResponseEntity<List<Food>>(flist, HttpStatus.OK);
-    }
-
-    // GET MAPPING (for only one through fid)
-    @GetMapping("/fetch/{fid}")
-    public ResponseEntity<Food> getFoodByFid(@PathVariable String fid) {
-        Food f = fService.getFoodByFID(fid);
-        return new ResponseEntity<Food>(f, HttpStatus.OK);
-    }
-
-    // DELETE MAPPING
-    @DeleteMapping("/delete/{fid}")
-    public ResponseEntity<String> deleteFood(@PathVariable String fid) {
-        fService.deleteFood(fid);
-        String msg = "Food Deleted Successfully";
-        return new ResponseEntity<String>(msg, HttpStatus.OK);
-    }
-
-    // PUT MAPPING
-    @PutMapping("/update/{fid}")
-    public ResponseEntity<String> updateFood(@PathVariable String fid, @RequestBody Food food) {
-        Food f = fService.updateFood(fid, food);
-        String msg = "";
-        if (f != null) {
-            msg = "Food Updated";
-        } else {
-            msg = "Food not Updated";
+    // Get all foods -- users as well as admins
+    @GetMapping
+    public ResponseEntity<?> getAllFoods() {
+        try {
+            return ResponseEntity.ok().body(fService.getFoods());
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return new ResponseEntity<String>(msg, HttpStatus.OK);
+    }
+
+    // Get foods by restaurant -- user as well as admins
+    @GetMapping("/restaurant/{id}")
+    public ResponseEntity<?> getFoodsByRestaurant(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok().body(fService.getFoodsByRestaurant(id));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // add foods only by -- admins
+    @PostMapping("/restaurant/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> addFoodToRestaurant(@PathVariable Long id, @RequestBody FoodItem food) {
+        try {
+            return ResponseEntity.ok().body(fService.addFoodToRestaurant(id, food));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // update food -- admins only
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateFood(@PathVariable Long id, @RequestBody FoodItem food) {
+        try {
+            String msg = fService.updateFood(id, food);
+            return ResponseEntity.ok().body(msg);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // delete food -- admins only
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteFood(@PathVariable Long id) {
+        try {
+            String msg = fService.deleteFood(id);
+            return ResponseEntity.ok().body(msg);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
