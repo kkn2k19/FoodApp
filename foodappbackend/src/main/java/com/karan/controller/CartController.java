@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.karan.dto.CartItemDto;
 import com.karan.model.CartItem;
 import com.karan.model.User;
 import com.karan.repository.UserRepo;
@@ -41,10 +42,11 @@ public class CartController {
         try {
             String email = authentication.getName();
             User loggedInUser = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+
             String msg = cartService.addToCart(loggedInUser.getId(), foodId, quantity);
-            return ResponseEntity.ok().body(msg);
+            return ResponseEntity.status(HttpStatus.CREATED).body(msg);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
@@ -71,7 +73,7 @@ public class CartController {
             String msg = cartService.updateCartItem(cartItemId, quantity);
             return ResponseEntity.ok().body(msg);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
@@ -83,7 +85,7 @@ public class CartController {
             String msg = cartService.removeCartItem(cartItemId);
             return ResponseEntity.ok().body(msg);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
@@ -98,7 +100,7 @@ public class CartController {
             String msg = cartService.clearCart(loggedInUser.getId());
             return ResponseEntity.ok().body(msg);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
@@ -109,10 +111,10 @@ public class CartController {
         String email = authentication.getName();
         User loggedInUser = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<CartItem> cart = cartService.getCart(loggedInUser.getId());
+        List<CartItemDto> cart = cartService.getCart(loggedInUser);
 
         if (cart.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Your cart is empty.");
+            return ResponseEntity.ok("Your cart is empty.");
         }
 
         return ResponseEntity.ok(cart);
@@ -121,8 +123,15 @@ public class CartController {
 }
 
 
-
 /*
- * 
- * 
+ *  Cart API Improvements:
+ * - UserId removed from path → always fetch from JWT. -> authentication -> email -> user
+ * - Secure: @PreAuthorize("hasRole('USER')"), JWT must store "ROLE_USER".
+ * - Endpoints simplified:
+ *   POST   /api/cart/add/{foodId}?quantity=2
+ *   GET    /api/cart
+ *   PUT    /api/cart/update/{cartItemId}?quantity=5
+ *   DELETE /api/cart/remove/{cartItemId}
+ *   DELETE /api/cart/clear
+ * - Status codes: 201 (Created), 204 (No Content), 400 (Bad Request).
  */
