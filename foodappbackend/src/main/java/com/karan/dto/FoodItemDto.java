@@ -14,4 +14,5 @@ public class FoodItemDto {
     private String description;
     private String category;
     private String restaurantName; // instead of full Restaurant entity
+    private String imageUrl;
 }
