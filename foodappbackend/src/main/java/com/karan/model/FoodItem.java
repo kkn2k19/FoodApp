@@ -39,6 +39,9 @@ public class FoodItem {
     @Column(nullable = false)
     private String category;
 
+    @Column(length = 500)
+    private String imageUrl; // cloudinary hosted image url
+
     // Many food items belong to one restaurant
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)

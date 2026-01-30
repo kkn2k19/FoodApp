@@ -12,6 +12,8 @@ public class FoodMapper {
                 food.getPrice(),
                 food.getDescription(),
                 food.getCategory(),
-                food.getRestaurant() != null ? food.getRestaurant().getName() : null);
+                food.getRestaurant() != null ? food.getRestaurant().getName() : null,
+                food.getImageUrl()
+            );
     }
 }

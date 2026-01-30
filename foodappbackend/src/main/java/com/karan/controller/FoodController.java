@@ -14,17 +14,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.karan.model.FoodItem;
 import com.karan.model.Restaurant;
 import com.karan.service.FoodService;
+import com.karan.service.ImageUploadService;
+
+import jakarta.mail.Multipart;
 
 @RestController
 @RequestMapping("/api/foods")
 public class FoodController {
     @Autowired
     private FoodService fService;
+
+    @Autowired
+    private ImageUploadService imageUploadService;
 
     // Get all foods -- users as well as admins
     @GetMapping
@@ -47,14 +55,37 @@ public class FoodController {
     }
 
     // add foods only by -- admins
-    @PostMapping("/restaurant/{id}")
+    @PostMapping(value = "/restaurant/{id}", consumes = "multipart/form-data")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> addFoodToRestaurant(@PathVariable Long id, @RequestBody FoodItem food) {
+    public ResponseEntity<?> addFoodToRestaurant(
+            @PathVariable Long id,
+            @RequestParam String name,
+            @RequestParam Double price,
+            @RequestParam String description,
+            @RequestParam String category,
+            @RequestParam MultipartFile image) {
+
         try {
+            String imageUrl = imageUploadService.uploadImage(image);
+
+            FoodItem food = new FoodItem();
+            food.setName(name);
+            food.setPrice(price);
+            food.setDescription(description);
+            food.setCategory(category);
+            food.setImageUrl(imageUrl);
+
             return ResponseEntity.ok().body(fService.addFoodToRestaurant(id, food));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+
+        // try {
+        // return ResponseEntity.ok().body(fService.addFoodToRestaurant(id, food));
+        // } catch (RuntimeException e) {
+        // return ResponseEntity.badRequest().body(e.getMessage());
+        // }
+
     }
 
     // update food -- admins only
