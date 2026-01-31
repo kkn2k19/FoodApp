@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import './App.css';
+// import './App.css';
 import "bootstrap/dist/css/bootstrap.css";
 import Nav from './components/Navbar';
 import { Routes, Route } from 'react-router-dom'
@@ -19,10 +19,12 @@ import Contact from './components/Contact';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import Navbar from "./components/Navbar";
 function App() {
   return (
     <div className="App">
       {/* <h2>FOOD APP</h2> */}
+      {<Navbar/>}
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/register' element={<Register />} />
