@@ -2,7 +2,7 @@ import React from 'react'
 import "./Food.css"
 import { Link } from 'react-router-dom'
 import { Outlet } from 'react-router-dom'
-import Nav from './Nav'
+import Nav from './Navbar'
 function Food() {
     return (
         <div>
