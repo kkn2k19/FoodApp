@@ -41,8 +41,9 @@ function Navbar() {
                 navigate("/");
             }}>FoodApp</h1>
             {!token ? (
-                <div className='space-x-6 text-gray-700 font-medium'>
+                <div className='space-x-2 text-gray-700 font-medium'>
                     <Link to="/login" className='hover:text-orange-600'>Login</Link>
+                    <span>||</span>
                     <Link to="/register" className='hover:text-orange-600'>Register</Link>
                 </div>
             ) : (
