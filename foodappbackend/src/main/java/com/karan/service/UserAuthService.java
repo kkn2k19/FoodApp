@@ -62,7 +62,10 @@ public class UserAuthService {
                                 // false for not verified account
         urepo.save(user);
 
-        return "User registered successfully";
+        // ✅ SEND OTP AFTER USER CREATION
+        emailService.createAndSendOtp(user.getEmail(), VerificationType.VERIFY);
+
+        return "User registered. OTP sent to email for verification.";
     }
 
     // login user -- > token + role
@@ -102,6 +105,15 @@ public class UserAuthService {
         return "Email verified successfully. You can now login.";
     }
 
+    // verify reset pass - email - reset otp
+    public String verifyResetPass(EmailVerifyRequest request) {
+        boolean isValidOtp = emailService.validateOtp(request.getEmail(), request.getOtp(), VerificationType.RESET);
+        if (!isValidOtp) {
+            throw new RuntimeException("Invalid/expired OTP");
+        }
+        return "OTP verified successfully.";
+    }
+
     // forgot password
     public String forgotPassword(ForgotPassRequest request) {
         Optional<User> userOptional = urepo.findByEmail(request.getEmail());
@@ -130,5 +142,25 @@ public class UserAuthService {
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         urepo.save(user);
         return "Password reset successful. You can now login with new password.";
+    }
+
+    // check email status
+    public String checkEmailStatus(String email) {
+        Optional<User> userOptional = urepo.findByEmail(email);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (user.isEnabled()) {
+                return "EXISTS_VERIFIED";
+            } else {
+                return "EXISTS_NOT_VERIFIED";
+            }
+        }
+        return "NEW_EMAIL";
+    }
+
+    // email present or not
+    public boolean isEmailPresent(String email) {
+        return urepo.existsByEmail(email);
     }
 }

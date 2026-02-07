@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +23,12 @@ import com.karan.model.User;
 import com.karan.repository.UserRepo;
 import com.karan.service.CartService;
 
+import lombok.RequiredArgsConstructor;
+
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/cart")
+@RequiredArgsConstructor
 public class CartController {
     @Autowired
     private CartService cartService;
@@ -32,7 +37,8 @@ public class CartController {
     private UserRepo userRepo;
 
     // add item to cart (logged-in user only)
-    // --not use userId in path since someone else can use and add items for other users
+    // --not use userId in path since someone else can use and add items for other
+    // users
     @PostMapping("/add/{foodId}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> addToCart(
@@ -67,8 +73,8 @@ public class CartController {
     @PutMapping("/update/{cartItemId}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> updateCartItem(
-        @PathVariable Long cartItemId, 
-        @RequestParam int quantity) {
+            @PathVariable Long cartItemId,
+            @RequestParam int quantity) {
         try {
             String msg = cartService.updateCartItem(cartItemId, quantity);
             return ResponseEntity.ok().body(msg);
@@ -77,7 +83,7 @@ public class CartController {
         }
     }
 
-    // remove a single item from cart 
+    // remove a single item from cart
     @DeleteMapping("/remove/{cartItemId}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> removeCartItem(@PathVariable Long cartItemId) {
@@ -95,7 +101,7 @@ public class CartController {
     public ResponseEntity<?> clearCart(Authentication authentication) {
         try {
             String email = authentication.getName();
-            User loggedInUser = userRepo.findByEmail(email).orElseThrow(()->new RuntimeException("User not found"));
+            User loggedInUser = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
 
             String msg = cartService.clearCart(loggedInUser.getId());
             return ResponseEntity.ok().body(msg);
@@ -122,16 +128,16 @@ public class CartController {
 
 }
 
-
 /*
- *  Cart API Improvements:
- * - UserId removed from path → always fetch from JWT. -> authentication -> email -> user
+ * Cart API Improvements:
+ * - UserId removed from path → always fetch from JWT. -> authentication ->
+ * email -> user
  * - Secure: @PreAuthorize("hasRole('USER')"), JWT must store "ROLE_USER".
  * - Endpoints simplified:
- *   POST   /api/cart/add/{foodId}?quantity=2
- *   GET    /api/cart
- *   PUT    /api/cart/update/{cartItemId}?quantity=5
- *   DELETE /api/cart/remove/{cartItemId}
- *   DELETE /api/cart/clear
+ * POST /api/cart/add/{foodId}?quantity=2
+ * GET /api/cart
+ * PUT /api/cart/update/{cartItemId}?quantity=5
+ * DELETE /api/cart/remove/{cartItemId}
+ * DELETE /api/cart/clear
  * - Status codes: 201 (Created), 204 (No Content), 400 (Bad Request).
  */

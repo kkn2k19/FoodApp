@@ -21,18 +21,35 @@
 
 // export default Nav
 
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 function Navbar() {
     const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
+    const dropdownRef = useRef();
 
     const logout = () => {
         localStorage.removeItem("token");
+        localStorage.removeItem("role");
         navigate("/");
     }
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setOpen(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+    }, [])
 
     return (
         // <div>Navbar</div>
@@ -51,21 +68,57 @@ function Navbar() {
                 //     <div className='w-8 h-8 bg-gray-300 rounded-full'></div>
                 // </Link>
 
-                <div className='relative'>
+                <div className='relative' ref={dropdownRef}>
                     <div
                         onClick={() => setOpen(!open)}
                         className='w-10 h-10 bg-orange-500 text-white flex items-center justify-center rounded-full cursor-pointer'>
                         👤
                     </div>
 
-                    {open && (
+                    {/* {open && (
                         <div className='absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2'>
                             <div onClick={() => navigate("/orders")} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">My Orders</div>
                             <div onClick={() => navigate("/profile")} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Profile</div>
-                            <div onClick={() => navigate("/favourites")} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Favourites</div>
+                            <div onClick={() => navigate("/cart")} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">My Cart</div>
                             <div onClick={logout} className="px-4 py-2 text-red-500 hover:bg-gray-100 cursor-pointer">Logout</div>
                         </div>
+                    )} */}
+
+
+                    {open && (
+                        <div className='absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2'>
+
+                            {role === "ADMIN" && (
+                                <>
+                                    <div onClick={() => { setOpen(false); navigate("/admin") }} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                                        Admin Dashboard
+                                    </div>
+                                    <div onClick={() => { setOpen(false); navigate("/orders") }} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                                        All Users' Orders
+                                    </div>
+                                </>
+                            )}
+
+                            {role === "USER" && (
+                                <>
+                                    <div onClick={() => { setOpen(false); navigate("/orders") }} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                                        My Orders
+                                    </div>
+                                    <div onClick={() => { setOpen(false); navigate("/profile") }} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                                        Profile
+                                    </div>
+                                    <div onClick={() => { setOpen(false); navigate("/cart") }} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                                        My Cart
+                                    </div>
+                                </>
+                            )}
+
+                            <div onClick={logout} className="px-4 py-2 text-red-500 hover:bg-gray-100 cursor-pointer">
+                                Logout
+                            </div>
+                        </div>
                     )}
+
                 </div>
             )}
         </div>

@@ -14,6 +14,7 @@ import com.karan.dto.LoginRequest;
 import com.karan.dto.RegisterRequest;
 import com.karan.dto.ResendOtpRequest;
 import com.karan.dto.ResetPassRequest;
+import com.karan.enums.VerificationType;
 import com.karan.service.EmailService;
 import com.karan.service.UserAuthService;
 
@@ -58,6 +59,17 @@ public class UserController {
         }
     }
 
+    // @PostMapping("/verify-reset-otp")
+    // public ResponseEntity<?> verifyResetOtp(@RequestBody EmailVerifyRequest
+    // request) {
+    // try {
+    // String msg = userAuthService.verifyResetPass(request);
+    // return ResponseEntity.ok().body(msg);
+    // } catch (RuntimeException e) {
+    // return ResponseEntity.badRequest().body(e.getMessage());
+    // }
+    // }
+
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody ForgotPassRequest request) {
         try {
@@ -84,6 +96,28 @@ public class UserController {
             String msg = "OTP resent successfully.";
             emailService.resendOtp(request.getEmail(), request.getType());
             return ResponseEntity.ok().body(msg);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // check email verified or not
+    @PostMapping("/check-email-status")
+    public ResponseEntity<?> checkEmailStatus(@RequestBody EmailVerifyRequest request) {
+        try {
+            String status = userAuthService.checkEmailStatus(request.getEmail());
+            return ResponseEntity.ok().body(status);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // email present or not in db
+    @PostMapping("/check-email-present")
+    public ResponseEntity<?> checkEmailPresent(@RequestBody EmailVerifyRequest request) {
+        try {
+            boolean isPresent = userAuthService.isEmailPresent(request.getEmail());
+            return ResponseEntity.ok().body(isPresent);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

@@ -16,16 +16,17 @@ import com.karan.model.OrderItem;
 import com.karan.model.User;
 import com.karan.repository.CartItemRepo;
 import com.karan.repository.OrderItemRepo;
-import com.karan.repository.OrderRepo;
+import com.karan.repository.OrderRepository;
+import com.karan.repository.OrderRepository;
 
 @Service
 public class OrderServiceImplementations implements OrderService {
     @Autowired
     private CartItemRepo cartRepo;
     @Autowired
-    private OrderRepo orderRepo;
-    @Autowired
-    private OrderItemRepo orderItemRepo;
+    private OrderRepository orderRepo;
+    // @Autowired
+    // private OrderItemRepo orderItemRepo;
 
     @Override
     public String placeOrder(User user) {
@@ -39,7 +40,7 @@ public class OrderServiceImplementations implements OrderService {
         order.setUser(user);
         order.setOrderDate(LocalDateTime.now());
         order.setStatus("PENDING");
-        orderRepo.save(order);
+        // orderRepo.save(order);
 
         double totalAmount = 0.0;
 
@@ -52,8 +53,10 @@ public class OrderServiceImplementations implements OrderService {
             orderItem.setPrice(cartItem.getFoodItem().getPrice() * cartItem.getQuantity());
 
             totalAmount += orderItem.getPrice();
-            orderItemRepo.save(orderItem);
+            order.getItems().add(orderItem);
+            // orderItemRepo.save(orderItem);
         }
+        orderRepo.save(order);
 
         cartRepo.deleteAll(cartItems); // clear cart after placing order
 
@@ -62,32 +65,57 @@ public class OrderServiceImplementations implements OrderService {
 
     @Override
     public List<OrderDto> getOrderForUser(User user) {
-        return orderRepo.findByUser(user).stream()
-                .map(order -> {
-                    OrderDto dto = new OrderDto();
-                    dto.setOrderId(order.getId());
-                    dto.setOrderDate(order.getOrderDate());
-                    dto.setStatus(order.getStatus());
+        // return orderRepo.findByUser(user).stream()
+        // .map(order -> {
+        // OrderDto dto = new OrderDto();
+        // dto.setOrderId(order.getId());
+        // dto.setOrderDate(order.getOrderDate());
+        // dto.setStatus(order.getStatus());
 
-                    // Map items
-                    List<OrderItemDto> itemDtos = order.getItems().stream()
-                            .map(item -> new OrderItemDto(
-                                    item.getFoodItem().getName(),
-                                    item.getQuantity(),
-                                    item.getPrice()))
-                            .toList();
+        // // Map items
+        // List<OrderItemDto> itemDtos = order.getItems().stream()
+        // .map(item -> new OrderItemDto(
+        // item.getFoodItem().getName(),
+        // item.getQuantity(),
+        // item.getPrice()))
+        // .toList();
 
-                    dto.setItems(itemDtos);
+        // dto.setItems(itemDtos);
 
-                    // calculating total amount
-                    double total = itemDtos.stream()
-                            .mapToDouble(OrderItemDto::getPrice)
-                            .sum();
-                    dto.setTotalAmount(total);
+        // // calculating total amount
+        // double total = itemDtos.stream()
+        // .mapToDouble(OrderItemDto::getPrice)
+        // .sum();
+        // dto.setTotalAmount(total);
 
-                    return dto;
-                })
-                .collect(Collectors.toList());
+        // return dto;
+        // })
+        // .collect(Collectors.toList());
+        return orderRepo.findByUserWithItems(user)
+                .stream()
+                .map(this::mapToDto)
+                .toList();
+    }
+
+    private OrderDto mapToDto(Order order) {
+        OrderDto dto = new OrderDto();
+        dto.setOrderId(order.getId());
+        dto.setOrderDate(order.getOrderDate());
+        dto.setStatus(order.getStatus());
+
+        List<OrderItemDto> items = order.getItems()
+                .stream()
+                .map(item -> new OrderItemDto(
+                        item.getFoodItem().getName(),
+                        item.getQuantity(),
+                        item.getPrice()))
+                .toList();
+
+        dto.setItems(items);
+        dto.setTotalAmount(
+                items.stream().mapToDouble(OrderItemDto::getPrice).sum());
+
+        return dto;
     }
 
     @Override
@@ -145,32 +173,36 @@ public class OrderServiceImplementations implements OrderService {
 
     @Override
     public List<OrderDto> getAllOrders() {
-        return orderRepo.findAll()
-                .stream()
-                .map(order -> {
-                    OrderDto dto = new OrderDto();
-                    dto.setOrderId(order.getId());
-                    dto.setOrderDate(order.getOrderDate());
-                    dto.setStatus(order.getStatus());
+        // return orderRepo.findAll()
+        // .stream()
+        // .map(order -> {
+        // OrderDto dto = new OrderDto();
+        // dto.setOrderId(order.getId());
+        // dto.setOrderDate(order.getOrderDate());
+        // dto.setStatus(order.getStatus());
 
-                    // Map items
-                    List<OrderItemDto> itemDtos = order.getItems().stream()
-                            .map(item -> new OrderItemDto(
-                                    item.getFoodItem().getName(),
-                                    item.getQuantity(),
-                                    item.getPrice()))
-                            .toList();
+        // // Map items
+        // List<OrderItemDto> itemDtos = order.getItems().stream()
+        // .map(item -> new OrderItemDto(
+        // item.getFoodItem().getName(),
+        // item.getQuantity(),
+        // item.getPrice()))
+        // .toList();
 
-                    dto.setItems(itemDtos);
+        // dto.setItems(itemDtos);
 
-                    // Calculate total amount dynamically
-                    double total = itemDtos.stream()
-                            .mapToDouble(OrderItemDto::getPrice)
-                            .sum();
-                    dto.setTotalAmount(total);
+        // // Calculate total amount dynamically
+        // double total = itemDtos.stream()
+        // .mapToDouble(OrderItemDto::getPrice)
+        // .sum();
+        // dto.setTotalAmount(total);
 
-                    return dto;
-                })
+        // return dto;
+        // })
+        // .toList();
+
+        return orderRepo.findAllWithItems()
+                .stream().map(this::mapToDto)
                 .toList();
     }
 

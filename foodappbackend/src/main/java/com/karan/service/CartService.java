@@ -83,14 +83,24 @@ public class CartService {
     // view user cart 
     public List<CartItemDto> getCart(User user){
         return cartRepo.findByUser(user).stream()
-        .map(cartItem -> {
-            CartItemDto dto = new CartItemDto();
-            dto.setId(cartItem.getId());
-            dto.setFoodName(cartItem.getFoodItem().getName());
-            dto.setRestaurantName(cartItem.getFoodItem().getRestaurant().getName());
-            dto.setQuantity(cartItem.getQuantity());
-            return dto;
-        })
+        // .map(cartItem -> {
+        //     CartItemDto dto = new CartItemDto();
+        //     dto.setId(cartItem.getId());
+        //     dto.setFoodName(cartItem.getFoodItem().getName());
+        //     dto.setRestaurantName(cartItem.getFoodItem().getRestaurant().getName());
+        //     dto.setQuantity(cartItem.getQuantity());
+        //     return dto;
+        // })
+
+        .map(cartItem -> new CartItemDto(
+            cartItem.getId(),                                      // cart item id
+            cartItem.getFoodItem().getId(),                         // food id
+            cartItem.getFoodItem().getName(),
+            cartItem.getFoodItem().getRestaurant().getName(),
+            cartItem.getFoodItem().getPrice(),                      // single item price
+            cartItem.getQuantity()
+        ))
+        
         .collect(Collectors.toList());
     }
 }

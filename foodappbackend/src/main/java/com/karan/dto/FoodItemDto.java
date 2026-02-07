@@ -13,6 +13,7 @@ public class FoodItemDto {
     private Double price;
     private String description;
     private String category;
+    private Long restaurantId; // res Id
     private String restaurantName; // instead of full Restaurant entity
     private String imageUrl;
 }

@@ -28,6 +28,7 @@ import jakarta.mail.Multipart;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/foods")
+
 public class FoodController {
     @Autowired
     private FoodService fService;
@@ -108,6 +109,15 @@ public class FoodController {
         try {
             String msg = fService.deleteFood(id);
             return ResponseEntity.ok().body(msg);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getFoodById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok().body(fService.getFoodById(id));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

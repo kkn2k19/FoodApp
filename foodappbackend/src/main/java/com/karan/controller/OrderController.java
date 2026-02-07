@@ -27,6 +27,7 @@ import com.karan.model.User;
 import com.karan.repository.UserRepo;
 import com.karan.service.OrderService;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
@@ -43,7 +44,7 @@ public class OrderController {
         return orderService.placeOrder(user);
     }
 
-    // Get all orders for logged-in order
+    // Get all orders for logged-in order -- USER or ADMIN --> all user orders
     @GetMapping
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public List<OrderDto> getUserOrders(Principal principal) {

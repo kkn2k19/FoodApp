@@ -64,4 +64,9 @@ public class FoodService {
         frepo.deleteById(foodId);
         return "Food deleted successfully";
     }
+
+    public Object getFoodById(Long id) {
+        FoodItem food = frepo.findById(id).orElseThrow(() -> new RuntimeException("Food not found"));
+        return FoodMapper.toDto(food);
+    }
 }
