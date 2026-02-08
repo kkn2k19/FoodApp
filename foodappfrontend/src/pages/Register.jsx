@@ -105,7 +105,7 @@ const Register = () => {
     const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);
-
+    const [loading, setLoading] = useState(false);
     const [emailExists, setEmailExists] = useState(null);  // true / false
 
     const checkEmail = () => {
@@ -122,10 +122,21 @@ const Register = () => {
             alert("Account already exists. Please login.");
             return;
         }
+
+        if (formData.password !== formData.confirmPassword) {
+            alert("Passwords do not match");
+            return;
+        }
+
+        setLoading(true);
+
         api.post("/api/auth/register", formData)
             .then((res) => {
                 alert(res.data);
-                navigate("/verify-otp", { state: { email: formData.email, type: "VERIFY" } });
+                // localStorage.setItem("email")
+                // navigate("/verify-otp", { state: { email: formData.email, type: "VERIFY" } });
+                localStorage.setItem("otpEmail", formData.email); // ⭐ FIX
+                navigate("/verify-otp");
             })
             .catch(e => alert(e.response?.data || "Registration failed"));
     }
@@ -140,7 +151,14 @@ const Register = () => {
     return (
         // <div>Register</div>
         <div className='min-h-screen flex items-center justify-center bg-gray-100 px-4'>
-            <div className='w-full max-w-md bg-white shadow-lg rounded-xl p-8 space-y-3'>
+            {/* <div className='w-full max-w-md bg-white shadow-lg rounded-xl p-8 space-y-3'> */}
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    register();
+                }}
+                className="w-full max-w-md bg-white shadow-lg rounded-xl p-8 space-y-3"
+            >
                 <h2 className='text-xl font-bold text-center'>Create Account</h2>
 
                 <input
@@ -269,8 +287,8 @@ const Register = () => {
                         Login
                     </span>
                 </p>
-            </div>
-        </div>
+            </form>
+        </div >
     )
 }
 
