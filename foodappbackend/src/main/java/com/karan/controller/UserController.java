@@ -20,7 +20,7 @@ import com.karan.service.UserAuthService;
 
 import lombok.RequiredArgsConstructor;
 
-@CrossOrigin(origins = "http://localhost:3000")
+// @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor

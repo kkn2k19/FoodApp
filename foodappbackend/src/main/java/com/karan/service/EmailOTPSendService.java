@@ -19,6 +19,7 @@ public class EmailOTPSendService {
     public void sendOtp(String to, String subject, String otp) {
         try {
             SimpleMailMessage msg = new SimpleMailMessage();
+            msg.setFrom("karankumarnonia11@gmail.com"); // REQUIRED
             msg.setTo(to);
             msg.setSubject(subject);
             msg.setText("Your Verification code is : " + otp + "\nThis code is valid for " + otpExpiryMinutes

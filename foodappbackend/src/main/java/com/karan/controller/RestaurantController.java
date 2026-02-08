@@ -18,7 +18,7 @@ import com.karan.service.RestaurantService;
 
 import lombok.RequiredArgsConstructor;
 
-@CrossOrigin(origins = "http://localhost:3000")
+// @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/restaurants")
 public class RestaurantController {
