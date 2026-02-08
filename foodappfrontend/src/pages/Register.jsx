@@ -190,7 +190,8 @@ const Register = () => {
                             <span>Account already exists</span>
                             <button
                                 onClick={() => navigate("/login")}
-                                className='text-blue-600 underline'>
+                                className='text-blue-600 underline'
+                            >
                                 Login
                             </button>
                         </div>
@@ -275,8 +276,9 @@ const Register = () => {
                     onChange={handleChange}
                 />
 
-                <button onClick={register} className="w-full bg-orange-500 text-white py-2 rounded-lg">
-                    Register
+                <button
+                    type="submit" disabled={loading} className="w-full bg-orange-500 text-white py-2 rounded-lg disabled:opacity-60">
+                    {loading ? "Registering..." : "Register"}
                 </button>
 
                 <p className='text-sm text-center'>
