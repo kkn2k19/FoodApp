@@ -21,19 +21,24 @@ const Orders = () => {
             </h1>
 
             {orders.length === 0 ? (
-                <p className='text-gray-500'>No orders found</p>
+                <p className='text-gray-500'>No orders found.</p>
             ) : (
                 <div className='space-y-4'>
                     {orders.map(order => (
                         <div key={order.orderId}
-                            className='bg-white p-5 rounded-xl shadow cursor-pointer'
+                            className='bg-white p-5 rounded-xl shadow cursor-pointer hover:shadow transition'
                             onClick={() => navigate(`/orders/${order.orderId}`)}>
                             <div className='flex justify-between items-center '>
                                 <h2 className='font-semibold' >
                                     Order #{order.orderId}
                                 </h2>
 
-                                <span className='text-sm px-3 py-1 rounded-full bg-gray-100'>
+                                <span className={`text-sm px-3 py-1 rounded-full ${order.status === "PENDING" ? "bg-yellow-100 text-yellow-700"
+                                        : order.status === "DELIVERED"
+                                            ? "bg-green-100 text-green-700"
+                                            : "bg-red-100 text-red-700"
+                                    }`}
+                                >
                                     {order.status}
                                 </span>
                             </div>

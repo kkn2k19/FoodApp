@@ -48,7 +48,8 @@ const RestaurantDetails = () => {
                         <img
                             src={food.imageUrl}
                             alt={food.name}
-                            className='w-24 h-24 object-cover rounded'
+                            className='w-24 h-24 object-cover rounded cursor-pointer'
+                            onClick={() => navigate(`/food/${food.id}`)}
                         />
                         <div className='flex flex-col flex-grow'>
                             <h3
