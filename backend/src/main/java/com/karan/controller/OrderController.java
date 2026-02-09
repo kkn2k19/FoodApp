@@ -27,7 +27,7 @@ import com.karan.model.User;
 import com.karan.repository.UserRepo;
 import com.karan.service.OrderService;
 
-// @CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {

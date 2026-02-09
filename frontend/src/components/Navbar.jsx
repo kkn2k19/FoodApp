@@ -23,18 +23,29 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import api from '../services/api';
 
 function Navbar() {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
+    const [profile, setProfile] = useState(null);
 
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef();
 
+    useEffect(() => {
+        if (!token) return;
+        api.get("/api/auth/me")
+            .then(res => setProfile(res.data))
+            .catch(() => setProfile(null))
+    }, [token])
+
+
     const logout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("role");
+        setProfile(null)
         navigate("/");
     }
 
@@ -71,8 +82,8 @@ function Navbar() {
                 <div className='relative' ref={dropdownRef}>
                     <div
                         onClick={() => setOpen(!open)}
-                        className='w-10 h-10 bg-orange-500 text-white flex items-center justify-center rounded-full cursor-pointer'>
-                        👤
+                        className='w-10 h-10 bg-orange-500 text-white-600 flex items-center justify-center rounded-full cursor-pointer'>
+                        {profile?.name ? profile.name.charAt(0).toUpperCase() : "U"}
                     </div>
 
                     {/* {open && (
@@ -88,8 +99,18 @@ function Navbar() {
                     {open && (
                         <div className='absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2'>
 
+                            <div onClick={() => {
+                                setOpen(false);
+                                navigate("/profile")
+                            }}
+                                className='px-4 py-2 hover:bg-gray-100 cursor-pointer'
+                            >
+                                My Profile
+                            </div>
+
                             {role === "ADMIN" && (
                                 <>
+
                                     <div onClick={() => { setOpen(false); navigate("/admin") }} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                                         Admin Dashboard
                                     </div>
@@ -104,9 +125,7 @@ function Navbar() {
                                     <div onClick={() => { setOpen(false); navigate("/orders") }} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                                         My Orders
                                     </div>
-                                    <div onClick={() => { setOpen(false); navigate("/profile") }} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                                        Profile
-                                    </div>
+                                    
                                     <div onClick={() => { setOpen(false); navigate("/cart") }} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                                         My Cart
                                     </div>

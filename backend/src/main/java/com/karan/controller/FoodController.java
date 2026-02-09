@@ -25,7 +25,7 @@ import com.karan.service.ImageUploadService;
 
 import jakarta.mail.Multipart;
 
-// @CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/foods")
 

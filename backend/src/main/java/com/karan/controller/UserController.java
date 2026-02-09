@@ -1,7 +1,10 @@
 package com.karan.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,13 +17,16 @@ import com.karan.dto.LoginRequest;
 import com.karan.dto.RegisterRequest;
 import com.karan.dto.ResendOtpRequest;
 import com.karan.dto.ResetPassRequest;
+import com.karan.dto.UserProfileDto;
 import com.karan.enums.VerificationType;
+import com.karan.model.User;
+import com.karan.repository.UserRepo;
 import com.karan.service.EmailService;
 import com.karan.service.UserAuthService;
 
 import lombok.RequiredArgsConstructor;
 
-// @CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -28,6 +34,7 @@ public class UserController {
 
     private final EmailService emailService;
     private final UserAuthService userAuthService;
+    private final UserRepo uRepo;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
@@ -121,5 +128,21 @@ public class UserController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping("/me")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public UserProfileDto getMyProfile(Authentication auth) {
+        User user = uRepo.findByEmail(auth.getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return new UserProfileDto(
+                user.getName(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getRole().name(),
+                user.getCity(),
+                user.getState(),
+                user.getPincode());
     }
 }

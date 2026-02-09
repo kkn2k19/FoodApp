@@ -25,7 +25,7 @@ import com.karan.service.CartService;
 
 import lombok.RequiredArgsConstructor;
 
-// @CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/cart")
 @RequiredArgsConstructor

@@ -16,6 +16,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import OrdersDetails from "./pages/OrdersDetails";
 import Orders from "./pages/Orders";
+import Profile from "./pages/Profile";
 function App() {
   return (
     <div className="App">
@@ -65,6 +66,15 @@ function App() {
               <OrdersDetails />
             </ProtectedRoute>
           }></Route>
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
         {/* <Route path="add" element={<AddFood />} />
           <Route path="update" element={<UpdateFood />} />
           <Route path="delete" element={<DeleteFood />} /> */}
