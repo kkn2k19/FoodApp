@@ -88,6 +88,8 @@ import { useNavigate } from 'react-router-dom'
 import api from '../services/api'
 
 const Register = () => {
+    const [cities, setCities] = useState([]);
+
     const [formData, setFormData] = useState({
         role: "USER",
         name: "",
@@ -146,6 +148,45 @@ const Register = () => {
             ...formData,
             [e.target.name]: e.target.value
         })
+    }
+
+    const handlePincodeChange = async (e) => {
+        const pin = e.target.value;
+        setFormData({
+            ...formData,
+            pincode: pin
+        })
+
+        if (pin.length === 6) {
+            try {
+                const res = await fetch(
+                    `https://api.postalpincode.in/pincode/${pin}`
+                );
+                const data = await res.json();
+
+                if (data[0].Status === "Success") {
+                    const postOffices = data[0].PostOffice;
+
+                    const districts = [
+                        ...new Set(
+                            postOffices.map(p => p.District)
+                        )
+                    ];
+
+                    setCities(districts);
+
+                    setFormData(prev => ({
+                        ...prev,
+                        city: districts[0],
+                        state: postOffices[0].State
+                    }));
+                } else {
+                    alert("Invalid Pincode");
+                }
+            } catch {
+                alert("unable to fetch location")
+            }
+        }
     }
 
     return (
@@ -257,24 +298,39 @@ const Register = () => {
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
                     onChange={handleChange}
                 />
-                <input
+                {/* <input
                     name="city"
                     placeholder="City"
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
                     onChange={handleChange}
-                />
-                <input
-                    name="state"
-                    placeholder="State"
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
-                    onChange={handleChange}
-                />
+                /> */}
                 <input
                     name="pincode"
                     placeholder="Pincode"
+                    value={formData.pincode}
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    onChange={handlePincodeChange}
+                />
+
+                <select name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    className='w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400'
+                >
+                    <option value="">Select City</option>
+                    {cities.map((c, i) => (
+                        <option key={i} value={c}>{c}</option>
+                    ))}
+                </select>
+                <input
+                    name="state"
+                    placeholder="State"
+                    value={formData.state}
+                    readOnly
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
                     onChange={handleChange}
                 />
+
 
                 <button
                     type="submit" disabled={loading} className="w-full bg-orange-500 text-white py-2 rounded-lg disabled:opacity-60">

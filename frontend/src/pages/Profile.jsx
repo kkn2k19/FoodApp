@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import api from '../services/api'
+import { useNavigate } from 'react-router-dom';
 
 
 const Profile = () => {
     const [profile, setProfile] = useState(null);
     const role = localStorage.getItem("role");
+    const navigate = useNavigate();
 
     useEffect(() => {
         api.get("/api/auth/me")
@@ -40,7 +42,23 @@ const Profile = () => {
                         </ul>
                     </div>
                 )}
+
+                <div className="mt-4 flex gap-3">
+                    <button
+                        onClick={() => navigate("/edit-profile")}
+                        className="bg-blue-500 text-white px-4 py-2 rounded">
+                        Edit Profile
+                    </button>
+
+                    <button
+                        onClick={() => navigate("/change-password")}
+                        className="bg-green-500 text-white px-4 py-2 rounded">
+                        Change Password
+                    </button>
+                </div>
+
             </div>
+
         </div>
     )
 }

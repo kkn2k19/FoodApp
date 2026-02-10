@@ -17,6 +17,11 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import OrdersDetails from "./pages/OrdersDetails";
 import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
+import ManageFoods from "./pages/admin/ManageFoods";
+import ManageRestaurants from "./pages/admin/ManageRestaurants";
+import ManageOrders from "./pages/admin/ManageOrders";
+import EditProfile from "./pages/admin/EditProfile";
+import ChangePassword from "./pages/admin/ChangePassword";
 function App() {
   return (
     <div className="App">
@@ -45,11 +50,29 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/admin"
-          element={<ProtectedRoute roleRequired="ADMIN">
-            <AdminDashboard />
-          </ProtectedRoute>} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute roleRequired="ADMIN">
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
 
+        <Route path="/admin/foods" element={
+          <ProtectedRoute roleRequired="ADMIN">
+            <ManageFoods />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/restaurants" element={
+          <ProtectedRoute roleRequired="ADMIN">
+            <ManageRestaurants />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/orders" element={
+          <ProtectedRoute roleRequired="ADMIN">
+            <ManageOrders />
+          </ProtectedRoute>
+        } />
 
         <Route
           path="/orders"
@@ -75,6 +98,24 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+
+        <Route
+          path="/edit-profile"
+          element={
+            <ProtectedRoute>
+              <EditProfile />
+            </ProtectedRoute>
+          } />
+
+        <Route
+          path="/change-password"
+          element={
+            <ProtectedRoute>
+              <ChangePassword />
+            </ProtectedRoute>
+          } />
+
         {/* <Route path="add" element={<AddFood />} />
           <Route path="update" element={<UpdateFood />} />
           <Route path="delete" element={<DeleteFood />} /> */}

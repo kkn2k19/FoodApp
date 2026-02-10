@@ -25,7 +25,7 @@ import com.karan.service.ImageUploadService;
 
 import jakarta.mail.Multipart;
 
-@CrossOrigin(origins = "http://localhost:3000")
+// @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/foods")
 
@@ -118,6 +118,27 @@ public class FoodController {
     public ResponseEntity<?> getFoodById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok().body(fService.getFoodById(id));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping(value = "/{id}/with-image", consumes = "multipart/form-data")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateFoodWithImage(
+            @PathVariable Long id,
+            @RequestParam String name,
+            @RequestParam Double price,
+            @RequestParam String description,
+            @RequestParam String category,
+            @RequestParam(required = false) MultipartFile image) {
+        try {
+            String imageUrl = null;
+            if (image != null && !image.isEmpty()) {
+                imageUrl = imageUploadService.uploadImage(image);
+            }
+            return ResponseEntity.ok(
+                    fService.updateFoodWithImage(id, name, price, description, category, imageUrl));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

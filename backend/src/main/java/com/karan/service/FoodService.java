@@ -69,4 +69,26 @@ public class FoodService {
         FoodItem food = frepo.findById(id).orElseThrow(() -> new RuntimeException("Food not found"));
         return FoodMapper.toDto(food);
     }
+
+    public String updateFoodWithImage(
+            Long foodId,
+            String name,
+            Double price,
+            String description,
+            String category,
+            String imageUrl) {
+        FoodItem food = frepo.findById(foodId).orElseThrow(() -> new RuntimeException("Food not found"));
+
+        food.setName(name);
+        food.setPrice(price);
+        food.setDescription(description);
+        food.setCategory(category);
+
+        if (imageUrl != null) {
+            food.setImageUrl(imageUrl);
+        }
+
+        frepo.save(food);
+        return "Food updated successfully";
+    }
 }
