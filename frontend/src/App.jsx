@@ -18,6 +18,7 @@ import OrdersDetails from "./pages/OrdersDetails";
 import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
 import ManageFoods from "./pages/admin/ManageFoods";
+import ManageRestaurants from "./pages/admin/ManageRestaurants";
 function App() {
   return (
     <div className="App">
@@ -57,6 +58,11 @@ function App() {
         <Route path="/admin/foods" element={
           <ProtectedRoute roleRequired="ADMIN">
             <ManageFoods />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/restaurants" element={
+          <ProtectedRoute roleRequired="ADMIN">
+            <ManageRestaurants />
           </ProtectedRoute>
         } />
 
