@@ -1,0 +1,166 @@
+package com.karan.service;
+
+import java.util.Optional;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.karan.dto.EmailVerifyRequest;
+import com.karan.dto.ForgotPassRequest;
+import com.karan.dto.JWTResponse;
+import com.karan.dto.LoginRequest;
+import com.karan.dto.RegisterRequest;
+import com.karan.dto.ResetPassRequest;
+import com.karan.enums.UserRole;
+import com.karan.enums.VerificationType;
+import com.karan.model.User;
+import com.karan.repository.UserRepo;
+import com.karan.security.JwtUtil;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class UserAuthService {
+    private final UserRepo urepo;
+    private final EmailService emailService;
+    private final JwtUtil jwtUtil;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
+
+    // register user
+    public String register(RegisterRequest request) {
+        if (request.getEmail() == null || request.getPassword() == null) {
+            throw new RuntimeException("Email and Password required.");
+        }
+
+        if (urepo.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Email already registered.");
+        }
+
+        if (urepo.existsByPhone(request.getPhone())) {
+            throw new RuntimeException("Phone Number already registered.");
+        }
+
+        if (!request.getPassword().equals(request.getConfirmPassword())) {
+            throw new RuntimeException("Passwords do not match.");
+        }
+
+        User user = new User();
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPhone(request.getPhone());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(UserRole.valueOf(request.getRole().toUpperCase()));
+
+        user.setAddressLine1(request.getAddressLine1());
+        user.setAddressLine2(request.getAddressLine2()); // optional
+        user.setCity(request.getCity());
+        user.setState(request.getState());
+        user.setPincode(request.getPincode());
+
+        user.setEnabled(false); // login disable until email verified with otp -- true for verified account and
+                                // false for not verified account
+        urepo.save(user);
+
+        // ✅ SEND OTP AFTER USER CREATION
+        emailService.createAndSendOtp(user.getEmail(), VerificationType.VERIFY);
+
+        return "User registered. OTP sent to email for verification.";
+    }
+
+    // login user -- > token + role
+    public JWTResponse login(LoginRequest request) {
+        Optional<User> optional = urepo.findByEmail(request.getEmail());
+        if (optional.isEmpty()) {
+            throw new RuntimeException("Invalid Credentials");
+        }
+        User user = optional.get();
+        if (!user.isEnabled()) {
+            throw new RuntimeException("Please verify your email before logging in.");
+        }
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid Credentials");
+        }
+
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
+
+        return JWTResponse.builder()
+                .token(token)
+                .role(user.getRole().name())
+                .build();
+    }
+
+    // verify email with otp
+    public String verifyEmail(EmailVerifyRequest request) {
+        boolean isValidOtp = emailService.validateOtp(request.getEmail(), request.getOtp(), VerificationType.VERIFY);
+        if (!isValidOtp) {
+            throw new RuntimeException("Invalid/expired OTP");
+        }
+
+        User user = urepo.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("user not found"));
+
+        user.setEnabled(true);
+        urepo.save(user);
+
+        return "Email verified successfully. You can now login.";
+    }
+
+    // verify reset pass - email - reset otp
+    public String verifyResetPass(EmailVerifyRequest request) {
+        boolean isValidOtp = emailService.validateOtp(request.getEmail(), request.getOtp(), VerificationType.RESET);
+        if (!isValidOtp) {
+            throw new RuntimeException("Invalid/expired OTP");
+        }
+        return "OTP verified successfully.";
+    }
+
+    // forgot password
+    public String forgotPassword(ForgotPassRequest request) {
+        Optional<User> userOptional = urepo.findByEmail(request.getEmail());
+
+        if (userOptional.isEmpty()) {
+            throw new RuntimeException("No user with given email");
+        }
+        emailService.createAndSendOtp(request.getEmail(), VerificationType.RESET);
+
+        return "Password reset OTP sent to your email.";
+    }
+
+    // reset password with OTP
+    public String resetPassword(ResetPassRequest request) {
+        if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+            throw new RuntimeException("Passwords do not match.");
+        }
+
+        boolean isValidOtp = emailService.validateOtp(request.getEmail(), request.getOtp(), VerificationType.RESET);
+
+        if (!isValidOtp) {
+            throw new RuntimeException("Invalid/expired OTP");
+        }
+
+        User user = urepo.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("user not found"));
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        urepo.save(user);
+        return "Password reset successful. You can now login with new password.";
+    }
+
+    // check email status
+    public String checkEmailStatus(String email) {
+        Optional<User> userOptional = urepo.findByEmail(email);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (user.isEnabled()) {
+                return "EXISTS_VERIFIED";
+            } else {
+                return "EXISTS_NOT_VERIFIED";
+            }
+        }
+        return "NEW_EMAIL";
+    }
+
+    // email present or not
+    public boolean isEmailPresent(String email) {
+        return urepo.existsByEmail(email);
+    }
+}
