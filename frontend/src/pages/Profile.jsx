@@ -42,19 +42,21 @@ const Profile = () => {
                         </ul>
                     </div>
                 )}
-            </div>
-            <div className="mt-4 flex gap-3">
-                <button
-                    onClick={() => navigate("/edit-profile")}
-                    className="bg-blue-500 text-white px-4 py-2 rounded">
-                    Edit Profile
-                </button>
 
-                <button
-                    onClick={() => navigate("/change-password")}
-                    className="bg-green-500 text-white px-4 py-2 rounded">
-                    Change Password
-                </button>
+                <div className="mt-4 flex gap-3">
+                    <button
+                        onClick={() => navigate("/edit-profile")}
+                        className="bg-blue-500 text-white px-4 py-2 rounded">
+                        Edit Profile
+                    </button>
+
+                    <button
+                        onClick={() => navigate("/change-password")}
+                        className="bg-green-500 text-white px-4 py-2 rounded">
+                        Change Password
+                    </button>
+                </div>
+
             </div>
 
         </div>
