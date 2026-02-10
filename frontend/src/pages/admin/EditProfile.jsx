@@ -13,6 +13,9 @@ const EditProfile = () => {
 
     const navigate = useNavigate();
 
+    const [cities, setCities] = useState([]);
+
+
     useEffect(() => {
         api.get("/api/auth/me")
             .then(res => {
@@ -25,6 +28,44 @@ const EditProfile = () => {
                 });
             });
     }, []);
+
+    const handlePincodeChange = async (e) => {
+        const pin = e.target.value;
+
+        setForm({
+            ...form,
+            pincode: pin
+        })
+
+        if (pin.length === 6) {
+            try {
+                const res = await fetch(
+                    `https://api.postalpincode.in/pincode/${pin}`
+                );
+
+                const data = await res.json();
+                if (data[0].Status === "Success") {
+                    const postOffices = data[0].PostOffice;
+
+                    const districts = [
+                        ...new Set(postOffices.map(p => p.District))
+                    ];
+
+                    setCities(districts);
+
+                    setForm(prev => ({
+                        ...prev,
+                        city: districts[0],
+                        state: postOffices[0].State
+                    }))
+                } else {
+                    alert("Invalid Pincode")
+                }
+            } catch {
+                alert("unable to fetch location")
+            }
+        }
+    }
 
     const handleChange = (e) => {
         setForm({
@@ -70,28 +111,35 @@ const EditProfile = () => {
                 />
 
                 <input
+                    name="pincode"
+                    placeholder="Pincode"
+                    value={form.pincode}
+                    onChange={handlePincodeChange}
+                    className="border p-2 w-full mb-3 rounded"
+                />
+                <select
                     name="city"
-                    placeholder="City"
                     value={form.city}
                     onChange={handleChange}
                     className="border p-2 w-full mb-3 rounded"
-                />
+                    disabled={!cities.length}
+                >
+                    <option value="">Select City</option>
+                    {cities.map((c, i) => (
+                        <option key={i} value={c} >{c}</option>
+                    ))}
+                </select>
 
                 <input
                     name="state"
                     placeholder="State"
                     value={form.state}
                     onChange={handleChange}
+                    readOnly
                     className="border p-2 w-full mb-3 rounded"
                 />
 
-                <input
-                    name="pincode"
-                    placeholder="Pincode"
-                    value={form.pincode}
-                    onChange={handleChange}
-                    className="border p-2 w-full mb-3 rounded"
-                />
+
 
                 <button
                     type="submit"
