@@ -6,10 +6,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.karan.dto.ChangePasswordRequest;
 import com.karan.dto.EmailVerifyRequest;
 import com.karan.dto.ForgotPassRequest;
 import com.karan.dto.JWTResponse;
@@ -17,6 +19,7 @@ import com.karan.dto.LoginRequest;
 import com.karan.dto.RegisterRequest;
 import com.karan.dto.ResendOtpRequest;
 import com.karan.dto.ResetPassRequest;
+import com.karan.dto.UpdateProfileRequest;
 import com.karan.dto.UserProfileDto;
 import com.karan.enums.VerificationType;
 import com.karan.model.User;
@@ -144,5 +147,23 @@ public class UserController {
                 user.getCity(),
                 user.getState(),
                 user.getPincode());
+    }
+
+    @PutMapping("/update-profile")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<?> updateProfile(
+            @RequestBody UpdateProfileRequest request,
+            Authentication auth) {
+        userAuthService.updateProfile(auth.getName(), request);
+        return ResponseEntity.ok("Profile updated successfully");
+    }
+
+    @PostMapping("/change-password")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<?> changePassword(
+            @RequestBody ChangePasswordRequest request,
+            Authentication auth) {
+        userAuthService.changePassword(auth.getName(), request);
+        return ResponseEntity.ok("Password changed successfully");
     }
 }

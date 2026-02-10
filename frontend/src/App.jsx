@@ -20,6 +20,8 @@ import Profile from "./pages/Profile";
 import ManageFoods from "./pages/admin/ManageFoods";
 import ManageRestaurants from "./pages/admin/ManageRestaurants";
 import ManageOrders from "./pages/admin/ManageOrders";
+import EditProfile from "./pages/admin/EditProfile";
+import ChangePassword from "./pages/admin/ChangePassword";
 function App() {
   return (
     <div className="App">
@@ -96,6 +98,24 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+
+        <Route
+          path="/edit-profile"
+          element={
+            <ProtectedRoute>
+              <EditProfile />
+            </ProtectedRoute>
+          } />
+
+        <Route
+          path="/change-password"
+          element={
+            <ProtectedRoute>
+              <ChangePassword />
+            </ProtectedRoute>
+          } />
+
         {/* <Route path="add" element={<AddFood />} />
           <Route path="update" element={<UpdateFood />} />
           <Route path="delete" element={<DeleteFood />} /> */}

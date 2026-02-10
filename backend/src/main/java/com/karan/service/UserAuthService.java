@@ -5,12 +5,14 @@ import java.util.Optional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.karan.dto.ChangePasswordRequest;
 import com.karan.dto.EmailVerifyRequest;
 import com.karan.dto.ForgotPassRequest;
 import com.karan.dto.JWTResponse;
 import com.karan.dto.LoginRequest;
 import com.karan.dto.RegisterRequest;
 import com.karan.dto.ResetPassRequest;
+import com.karan.dto.UpdateProfileRequest;
 import com.karan.enums.UserRole;
 import com.karan.enums.VerificationType;
 import com.karan.model.User;
@@ -162,5 +164,29 @@ public class UserAuthService {
     // email present or not
     public boolean isEmailPresent(String email) {
         return urepo.existsByEmail(email);
+    }
+
+    public void updateProfile(String email, UpdateProfileRequest request) {
+        User user = urepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setName(request.getName());
+        user.setPhone(request.getPhone());
+        user.setCity(request.getCity());
+        user.setState(request.getState());
+        user.setPincode(request.getPincode());
+
+        urepo.save(user);
+    }
+
+    public void changePassword(String email, ChangePasswordRequest request) {
+        User user = urepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            throw new RuntimeException("Old password incorrect");
+        }
+        if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+            throw new RuntimeException("Passwords do not match");
+        }
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        urepo.save(user);
     }
 }
