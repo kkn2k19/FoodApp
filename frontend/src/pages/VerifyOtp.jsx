@@ -1,20 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import api from '../services/api'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const VerifyOtp = () => {
     const [otp, setOtp] = useState("");
-    const location = useLocation();
     const navigate = useNavigate();
 
-    const email = location.state?.email;
-    const type = location.state?.type;
+    const email = localStorage.getItem("otpEmail");
+    const type = "VERIFY";
 
-    if (!email || !type) {
-        alert("Session expired. Please try again.");
-        navigate("/login");
-        return null;
-    }
+    useEffect(() => {
+        if (!email) {
+            alert("Session expired. Please register again.");
+            navigate("/register");
+        }
+    }, [email, navigate]);
+
+    if (!email) return null;
 
     // const verifyOtp = () => {
     //     const url =
@@ -41,6 +43,7 @@ const VerifyOtp = () => {
             api.post("/api/auth/verify-email", { email, otp })
                 .then((res) => {
                     alert(res.data);
+                    localStorage.removeItem("otpEmail");
                     navigate("/login");
                 })
                 .catch((err) => alert(err.response?.data || "Invalid OTP"));
